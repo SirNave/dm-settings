@@ -1,4 +1,0 @@
-Configuracoes
-=============
-
-Arquivos de Configurações
