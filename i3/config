@@ -243,6 +243,9 @@ for_window [class="Xfburn"] floating enable
 # switch to workspace with urgent window automatically
 for_window [urgent=latest] focus
 
+# origin fix
+for_window [instance="origin.exe"] floating enable
+
 # reload the configuration file
 bindsym $mod+Shift+c reload
 
@@ -317,7 +320,7 @@ exec --no-startup-id xautolock -time 10 -locker blurlock
 exec_always --no-startup-id ff-theme-util
 exec_always --no-startup-id fix_xcursor
 exec_always --no-startup-id dunst
-exec_always --no-startup-id setxkbmap -model abnt2 -layout br -variant abnt2
+#exec_always --no-startup-id setxkbmap -model abnt2 -layout br -variant abnt2
 
 # Color palette used for the terminal ( ~/.Xresources file )
 # Colors are gathered based on the documentation:
