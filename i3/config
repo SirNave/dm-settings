@@ -42,20 +42,27 @@ bindsym $mod+z exec --no-startup-id morc_menu
 ## sound-section - DO NOT EDIT if you wish to automatically upgrade Alsa -> Pulseaudio later! ##
 ################################################################################################
 
-exec --no-startup-id volumeicon
-bindsym $mod+Ctrl+m exec terminal -e 'alsamixer'
+#exec --no-startup-id volumeicon
+#bindsym $mod+Ctrl+m exec terminal -e 'alsamixer'
 #exec --no-startup-id pulseaudio
 #exec --no-startup-id pa-applet
-#bindsym $mod+Ctrl+m exec pavucontrol
+bindsym $mod+Ctrl+m exec pavucontrol
+exec --no-startup-id blueman-tray # Bluetooth icon
 
 ################################################################################################
 
 # Pulse Audio controls
-bindsym Ctrl+KP_Add exec --no-startup-id pactl set-sink-volume 0 +5% #increase sound volume
-bindsym Ctrl+KP_Subtract exec --no-startup-id pactl set-sink-volume 0 -5% #decrease sound volume
-bindsym Ctrl+plus exec --no-startup-id pactl set-sink-volume 0 +5% #increase sound volume
-bindsym Ctrl+minus exec --no-startup-id pactl set-sink-volume 0 -5% #decrease sound
+#bindsym Ctrl+KP_Add exec --no-startup-id pactl set-sink-volume 0 +5% #increase sound volume
+#bindsym Ctrl+KP_Subtract exec --no-startup-id pactl set-sink-volume 0 -5% #decrease sound volume
+#bindsym Ctrl+plus exec --no-startup-id pactl set-sink-volume 0 +5% #increase sound volume
+#bindsym Ctrl+minus exec --no-startup-id pactl set-sink-volume 0 -5% #decrease sound
 #bindsym XF86AudioMute exec --no-startup-id pactl set-sink-mute 0 toggle # mute sound
+
+# Alsa control
+bindsym Ctrl+KP_Add exec --no-startup-id amixer set 'Master' 5%+ #increase sound volume
+bindsym Ctrl+KP_Subtract exec --no-startup-id amixer set 'Master' 5%- #decrease sound volume
+bindsym Ctrl+plus exec --no-startup-id amixer set 'Master' 5%+ #increase sound volume
+bindsym Ctrl+minus exec --no-startup-id amixer set 'Master' 5%+ #decrease sound
 
 # Media player controls
 bindsym Ctrl+KP_Decimal exec playerctl play-pause
