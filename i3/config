@@ -33,7 +33,8 @@ bindsym $mod+Return exec terminal
 bindsym $mod+Shift+q kill
 
 # start program launcher
-bindsym $mod+d exec --no-startup-id dmenu_recency
+#bindsym $mod+d exec --no-startup-id dmenu_recency
+#bindsym $mod+d exec --no-startup-id "dmenu_recency -nf '#BBBBBB' -nb '#222222' -sb '#005577' -sf '#EEEEEE' -fn 'monospace-10' -p 'dmenu prompt >'"
 
 # launch categorized menu
 bindsym $mod+z exec --no-startup-id morc_menu
@@ -48,6 +49,10 @@ bindsym $mod+z exec --no-startup-id morc_menu
 #exec --no-startup-id pa-applet
 bindsym $mod+Ctrl+m exec pavucontrol
 exec --no-startup-id blueman-tray # Bluetooth icon
+
+#### Default applications ####
+exec --no-startup-id ckb-next
+exec --no-startup-id radeon-profile
 
 ################################################################################################
 
@@ -81,12 +86,15 @@ exec ~/.screenlayout/side-by-side.sh
 bindsym $mod+Ctrl+b exec terminal -e 'bmenu'
 bindsym $mod+F2 exec palemoon
 bindsym $mod+F3 exec pcmanfm
-bindsym $mod+Shift+w exec --no-startup-id rofi -show window
+#bindsym $mod+Shift+w exec --no-startup-id rofi -show window -lines 15
+#bindsym $mod+Shift+w exec --no-startup-id "rofi -modi 'run,windowcd,window' -show window -lines 15 -show-icons -sidebar-mode"
+bindsym $mod+Shift+w exec --no-startup-id rofi -show window -config ~/.config/rofi/rofi.rasi
+bindsym $mod+d exec --no-startup-id rofi -show drun -config ~/.config/rofi/rofi.rasi
 # bindsym $mod+F3 exec ranger
 bindsym $mod+Shift+F3 exec gksu pcmanfm
 bindsym $mod+F5 exec terminal -e 'mocp'
-bindsym $mod+t exec --no-startup-id pkill compton
-bindsym $mod+Ctrl+t exec --no-startup-id compton -b
+bindsym $mod+t exec --no-startup-id pkill compton;exec notify-send 'Compton kIlled'
+bindsym $mod+Ctrl+t exec --no-startup-id compton -b;exec notify-send 'Start compton'
 bindsym $mod+Shift+d --release exec "killall dunst ; dunst ; notify-send 'dunst restarted'"
 bindsym Print exec --no-startup-id flameshot gui
 bindsym $mod+Print --release exec --no-startup-id flameshot screen
@@ -321,13 +329,14 @@ exec --no-startup-id pamac-tray
 exec --no-startup-id clipit
 # exec --no-startup-id blueman-applet
 # exec_always --no-startup-id sbxkb
-exec --no-startup-id start_conky_maia
+# exec --no-startup-id start_conky_maia
 # exec --no-startup-id start_conky_green
-exec --no-startup-id xautolock -time 10 -locker blurlock
+exec --no-startup-id xautolock -time 10 -locker blurlock -notify 60 -notifier dunst
 exec_always --no-startup-id ff-theme-util
 exec_always --no-startup-id fix_xcursor
 exec_always --no-startup-id dunst
 #exec_always --no-startup-id setxkbmap -model abnt2 -layout br -variant abnt2
+exec --no-startup-id solaar -w hide
 
 # Color palette used for the terminal ( ~/.Xresources file )
 # Colors are gathered based on the documentation:
@@ -381,16 +390,16 @@ bar {
 	strip_workspace_numbers yes
 
     colors {
-    	background #002b36
-    	statusline #268bd2
-    	separator  #dc322f
+    	background #121212
+    	statusline #03dac6
+    	separator  #bb86fc
 
-#                      border  backgr. text
-    	focused_workspace  #fdf6e3 #859900 #fdf6e3
-    	active_workspace   #fdf6e3 #6c71c4 #fdf6e3
-    	inactive_workspace #586e75 #93a1a1 #002b36
-        binding_mode       #16a085 #2C2C2C #F9FAF9
-    	urgent_workspace   #d33682 #d33682 #fdf6e3
+#                          border  backgr. text
+    	focused_workspace  #121212 #03dac6 #121212
+    	active_workspace   #bb86fc #121212 #bb86fc
+    	inactive_workspace #03dac6 #121212 #03dac6
+        binding_mode       #03dac6 #000000 #03dac6
+    	urgent_workspace   #121212 #cf6679 #ffffff
 
     }
 }
@@ -399,16 +408,13 @@ bar {
 bindsym $mod+m bar mode toggle
 
 # Theme colors
-# class                   border  backgr. text    indic.   child_border
-  client.focused 	  #859900 #859900 #fdf6e3 #859900
-  client.focused_inactive #073642 #073642 #eee8d5 #6c71c4
-  client.unfocused 	  #073642 #073642 #93a1a1 #586e75
-  client.urgent 	  #d33682 #d33682 #fdf6e3 #dc322f
-  client.placeholder      #000000 #0c0c0c #ffffff #000000
-
-
-  client.background       #2B2C2B
-
+# class                         border        backgr.       text          indic.        child_border
+  client.focused 	        #121212       #03dac6       #121212       #121212       #03dac6
+  client.focused_inactive       #121212       #bb86fc       #121212       #121212       #bb86fc
+  client.unfocused 	        #bb86fc       #121212       #bb86fc       #bb86fc       #121212
+  client.urgent 	        #121212       #cf6679       #121212       #cf6679       #cf6679
+  client.placeholder            #03dac6       #121212       #03dac6       #121212       #121212
+  client.background             #121212
 
 #############################
 ### settings for i3-gaps: ###

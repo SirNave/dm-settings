@@ -1,0 +1,184 @@
+configuration {
+    // The display name of this browser
+    display-calc:                   "Calc";
+    display-drun:                   "Applications";
+    display-run:                    "Run";
+    display-window:                 "All Windows";
+    display-windowcd:               "Current Window";
+    show-icons: true;
+}
+* {
+    // Configs
+    scrollbar: false;
+    location: center;
+    anchor:   center;
+    spacing:                     2;
+    border-color:                var(foreground);
+    background-color:            var(transparency);
+    // Colors
+    background: #161616;
+    alternate-background: #121212;
+    foreground: #06dac6FF;
+    selected: #bb86ffFF;
+    urgent: #cf6679;
+    transparency: #00000000;
+    // Normal
+    normal-background:           var(background);
+    normal-foreground:           var(foreground);
+    selected-normal-background:  var(foreground);
+    selected-normal-foreground:  var(background);
+    alternate-normal-background: var(alternate-background);
+    alternate-normal-foreground: var(foreground);
+    // Active
+    active-background:           var(background);
+    active-foreground:           var(selected);
+    selected-active-background:  var(selected);
+    selected-active-foreground:  var(background);
+    alternate-active-background: var(alternate-background);
+    alternate-active-foreground: var(selected);
+    // Urgent
+    urgent-background:           var(background);
+    urgent-foreground:           var(urgent);
+    selected-urgent-background:  var(urgent);
+    selected-urgent-foreground:  var(background);
+    alternate-urgent-background: var(alternate-background);
+    alternate-urgent-foreground: var(urgent);
+}
+window {
+    transparency: "screenshot";
+}
+mainbox {
+    padding: 0;
+    border:  0;
+}
+message {
+    border: 2px; 
+    padding: 1em; 
+    border-color: var(foreground);
+    background-color: var(background); 
+    text-color: var(foreground);
+    border-radius: 0.3em;
+}
+textbox {
+    text-color: var(foreground);
+}
+
+textbox normal {
+    padding: 0;
+    border: 0;
+    border-radius: 0.3em;
+}
+listview {
+    scrollbar:    true;
+    border-color: var(foreground);
+    spacing:      2px ;
+    fixed-height: 0;
+    border: 2px;
+    padding: 1em;
+    reverse: false;
+    columns: 1;
+    text-color: var(foreground);
+    background-color: var(background); 
+    border-radius: 0.3em;
+}
+element {
+    padding: 1px ;
+    border-radius: 0.2em;
+}
+element normal.normal {
+    background-color: var(normal-background);
+    text-color:       var(normal-foreground);
+}
+element normal.urgent {
+    background-color: var(urgent-background);
+    text-color:       var(urgent-foreground);
+}
+element normal.active {
+    background-color: var(active-background);
+    text-color:       var(active-foreground);
+}
+element selected.normal {
+    background-color: var(selected-normal-background);
+    text-color:       var(selected-normal-foreground);
+}
+element selected.urgent {
+    background-color: var(selected-urgent-background);
+    text-color:       var(selected-urgent-foreground);
+}
+element selected.active {
+    background-color: var(selected-active-background);
+    text-color:       var(selected-active-foreground);
+}
+element alternate.normal {
+    background-color: var(alternate-normal-background);
+    text-color:       var(alternate-normal-foreground);
+}
+element alternate.urgent {
+    background-color: var(alternate-urgent-background);
+    text-color:       var(alternate-urgent-foreground);
+}
+element alternate.active {
+    background-color: var(alternate-active-background);
+    text-color:       var(alternate-active-foreground);
+}
+scrollbar {
+    width:        4px ;
+    padding:      0;
+    handle-width: 8px ;
+    border:       0;
+    handle-color: var(normal-foreground);
+}
+mode-switcher {
+    // Use to create a box for the buttons to switch between modes
+    // border-color: var(foreground);
+}
+button {
+    text-color: var(foreground);
+    background-color: var(background);
+    padding: 0.5em 0.1em;
+    margin: 0.1em;
+    border-radius: 0.3em;
+    border: 2px;
+    border-color: var(foreground);
+}
+button selected {
+    background-color: var(selected-normal-background);
+    text-color: var(selected-normal-foreground);
+    border-color: var(selected-normal-background);
+    text-decoration: bold;
+}
+inputbar {
+    spacing: 0;
+    border: 2px;
+    padding: 0.5em 1em;
+    background-color: var(background);
+    text-color: var(normal-foreground);
+    index: 0;
+    border-radius: 0.3em;
+    children:   [ prompt,textbox-prompt-colon,entry,overlay,case-indicator ];
+}
+case-indicator {
+    spacing:    0;
+    text-color: var(normal-foreground);
+}
+entry {
+    spacing:    0;
+    text-color: var(normal-foreground);
+}
+prompt {
+    spacing:    0;
+    text-color: var(normal-foreground);
+}
+textbox-prompt-colon {
+    expand:     false;
+    str:        ":";
+    margin:     0px 0.3em 0em 0em ;
+    text-color: var(normal-foreground);
+}
+error-message {
+    border: 2px; 
+    padding: 1em; 
+    background-color: var(background); 
+    text-color: var(foreground);
+    border-radius: 0.3em;
+}
