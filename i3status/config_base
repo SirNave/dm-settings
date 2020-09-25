@@ -20,6 +20,7 @@ general {
 }
 
 order += "ethernet _first_"
+order += "wireless _first_"
 order += "cpu_usage"
 #CpuFrequencyMonitoring
 #CpuTemperatureMonitoring
@@ -30,6 +31,7 @@ order += "memory"
 order += "tztime local"
 # order += "ipv6"
 order += "volume master"
+order += "battery all"
 
 memory {
 	memory_used_method = "memavailable"
@@ -52,13 +54,9 @@ cpu_usage {
 }
 
 #CpuFrequencyMapping
-
 #CpuTemperatureMapping
-
 #GpuMapping
-
 #NvmeMapping
-
 #DiskMapping
 
 ethernet _first_ {
@@ -67,7 +65,32 @@ ethernet _first_ {
         format_down = " no lan "
 }
 
+wireless _first_ {
+        format_up = "W: (%quality at %essid, %bitrate / %frequency) %ip"
+        format_down = " no wireless "
+        format_quality = "%03d%s"
+}
+
 tztime local {
         # format = "%Y-%m-%d %H:%M:%S"
         format = " %d.%m.%Y %H:%M:%S "
+}
+
+battery all {
+        # format = "%status %percentage %remaining %emptytime"
+        format = " %status %percentage"
+        format_down = "No battery"
+        last_full_capacity = true
+        integer_battery_capacity = true
+        # status_chr = ""
+        status_chr = "⚡"
+        # status_bat = "bat"
+        # status_bat = "☉"
+        status_bat = ""
+        # status_unk = "?"
+        status_unk = ""
+        # status_full = ""
+        status_full = "☻"
+        low_threshold = 15
+        threshold_type = time
 }
