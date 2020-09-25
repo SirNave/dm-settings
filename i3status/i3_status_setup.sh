@@ -33,8 +33,8 @@ for (( i=0; i<${#disks[@]}; i++ )); do
         disk_info_label=6;
     fi
 
-    disk_mapping="${disk_mapping}\ndisk \"${disk_info[disk_info_path]}\" {\n        format = \" ⛁ ${disk_info[disk_info_label]} %avail \"\n}";
-    disk_monitoring="${disk_monitoring}order \+= \"disk ${disk_info[disk_info_label]}\"";
+    disk_mapping="${disk_mapping}\ndisk \"${disk_info[disk_info_path]}\" {\n        format = \" ⛁ ${disk_info[disk_info_label]} %avail \"\n}\n";
+    disk_monitoring="${disk_monitoring}order \+= \"disk ${disk_info[disk_info_path]}\"\n";
 done
 
 disk_monitoring_replace="#DiskMonitoring";
@@ -71,7 +71,7 @@ for (( i=0; i<=${#gpus[@]}; i++ )); do
     # Check if can get the temps
     if [ -f ${gpu_temp_input} ]
     then
-        gpu_monitoring="${gpu_monitoring}order += \"cpu_temperature ${cpu_temperature_index}\"\n";
+        gpu_monitoring="${gpu_monitoring}order += \"cpu_temperature ${cpu_temperature_index}\"";
         gpu_mapping="${gpu_mapping}\ncpu_temperature ${cpu_temperature_index} {\n        format = \"🌡️ Gpu %degrees °C\"\n        path = \"${gpu_temp_input}\"\n        max_threshold = 65\n}";
 
         cpu_temperature_index=$((SUM=${cpu_temperature_index}+1));
@@ -133,7 +133,7 @@ then
         # Check if can get the temps
         if [ -f ${nvme_temp_input} ]
         then
-            nvme_monitoring="${nvme_monitoring}order += \"cpu_temperature ${cpu_temperature_index}\"\n";
+            nvme_monitoring="${nvme_monitoring}order += \"cpu_temperature ${cpu_temperature_index}\"";
             nvme_mapping="${nvme_mapping}\ncpu_temperature ${cpu_temperature_index} {\n        format = \"🌡️ Nvme %degrees °C\"\n        path = \"${nvme_temp_input}\"\n        max_threshold = 65\n}";
 
             cpu_temperature_index=$((SUM=${cpu_temperature_index}+1));
@@ -167,8 +167,8 @@ cpu_temp_input="/sys/bus/pci/devices/0000:00:18.3/hwmon/hwmon?/temp1_input";
 if [ -f ${cpu_temp_input} ]
 then
     cpu_temp_label=$(cat /sys/bus/pci/devices/0000:00:18.3/hwmon/hwmon?/temp1_label);
-    cpu_temperature_mapping="${cpu_temperature_mapping}\ncpu_temperature ${cpu_temperature_index} {\n        format = \" ${cpu_temp_label} %degrees °C\"\n        path = \"${cpu_temp_input}\"\n        max_threshold = 65\n}";
-    cpu_temperature_monitoring="${cpu_temperature_monitoring}order += \"cpu_temperature ${cpu_temperature_index}\"";
+    cpu_temperature_mapping="${cpu_temperature_mapping}\ncpu_temperature ${cpu_temperature_index} {\n        format = \" ${cpu_temp_label} %degrees °C\"\n        path = \"${cpu_temp_input}\"\n        max_threshold = 65\n}\n";
+    cpu_temperature_monitoring="${cpu_temperature_monitoring}order += \"cpu_temperature ${cpu_temperature_index}\"\n";
     cpu_temperature_index=$((SUM=${cpu_temperature_index}+1));
 else
     echo "Can't acquire cpu temperature!";
@@ -179,8 +179,8 @@ cpu_temp_input="/sys/bus/pci/devices/0000:00:18.3/hwmon/hwmon?/temp2_input";
 if [ -f ${cpu_temp_input} ]
 then
     cpu_temp_label=$(cat /sys/bus/pci/devices/0000:00:18.3/hwmon/hwmon?/temp2_label);
-    cpu_temperature_mapping="${cpu_temperature_mapping}\ncpu_temperature ${cpu_temperature_index} {\n        format = \" ${cpu_temp_label} %degrees °C\"\n        path = \"${cpu_temp_input}\"\n        max_threshold = 65\n}";
-    cpu_temperature_monitoring="${cpu_temperature_monitoring}order += \"cpu_temperature ${cpu_temperature_index}\"";
+    cpu_temperature_mapping="${cpu_temperature_mapping}\ncpu_temperature ${cpu_temperature_index} {\n        format = \" ${cpu_temp_label} %degrees °C\"\n        path = \"${cpu_temp_input}\"\n        max_threshold = 65\n}\n";
+    cpu_temperature_monitoring="${cpu_temperature_monitoring}order += \"cpu_temperature ${cpu_temperature_index}\"\n";
     cpu_temperature_index=$((SUM=${cpu_temperature_index}+1));
 else
     echo "Can't acquire cpu temperature!";
@@ -191,8 +191,8 @@ cpu_temp_input="/sys/bus/pci/devices/0000:00:18.3/hwmon/hwmon?/temp3_input";
 if [ -f ${cpu_temp_input} ]
 then
     cpu_temp_label=$(cat /sys/bus/pci/devices/0000:00:18.3/hwmon/hwmon?/temp3_label);
-    cpu_temperature_mapping="${cpu_temperature_mapping}\ncpu_temperature ${cpu_temperature_index} {\n        format = \" ${cpu_temp_label} %degrees °C\"\n        path = \"${cpu_temp_input}\"\n        max_threshold = 65\n}";
-    cpu_temperature_monitoring="${cpu_temperature_monitoring}order += \"cpu_temperature ${cpu_temperature_index}\"";
+    cpu_temperature_mapping="${cpu_temperature_mapping}\ncpu_temperature ${cpu_temperature_index} {\n        format = \" ${cpu_temp_label} %degrees °C\"\n        path = \"${cpu_temp_input}\"\n        max_threshold = 65\n}\n";
+    cpu_temperature_monitoring="${cpu_temperature_monitoring}order += \"cpu_temperature ${cpu_temperature_index}\"\n";
     cpu_temperature_index=$((SUM=${cpu_temperature_index}+1));
 else
     echo "Can't acquire cpu temperature!";
@@ -202,7 +202,7 @@ cpu_temperature_input="/sys/devices/platform/nct6775.656/hwmon/hwmon?/temp2_inpu
 
 if [ -f ${cpu_temperature_input} ]
 then
-    cpu_temperature_mapping="${cpu_temperature_mapping}\ncpu_temperature ${cpu_temperature_index} {\n        format = \" Cpu %degrees °C\"\n        path = \"${cpu_temperature_input}\"\n        max_threshold = 65\n}";
+    cpu_temperature_mapping="${cpu_temperature_mapping}\ncpu_temperature ${cpu_temperature_index} {\n        format = \" Cpu %degrees °C\"\n        path = \"${cpu_temperature_input}\"\n        max_threshold = 65\n}\n";
     cpu_temperature_monitoring="${cpu_temperature_monitoring}order += \"cpu_temperature ${cpu_temperature_index}\"";
     cpu_temperature_index=$((SUM=${cpu_temperature_index}+1));
 else
@@ -213,8 +213,8 @@ cpu_intel_temp_input="/sys/devices/platform/coretemp.0/hwmon/hwmon?/temp2_input"
 
 if [ -f ${cpu_intel_temp_input} ]
 then
-    cpu_temperature_mapping="${cpu_temperature_mapping}\ncpu_temperature ${cpu_temperature_index} {\n        format = \" Cpu %degrees °C\"\n        path = \"${cpu_intel_temp_input}\"\n        max_threshold = 65\n}";
-    cpu_temperature_monitoring="${cpu_temperature_monitoring}order += \"cpu_temperature ${cpu_temperature_index}\"";
+    cpu_temperature_mapping="${cpu_temperature_mapping}\ncpu_temperature ${cpu_temperature_index} {\n        format = \" Cpu %degrees °C\"\n        path = \"${cpu_intel_temp_input}\"\n        max_threshold = 65\n}\n";
+    cpu_temperature_monitoring="${cpu_temperature_monitoring}order += \"cpu_temperature ${cpu_temperature_index}\"\n";
     cpu_temperature_index=$((SUM=${cpu_temperature_index}+1));
 else
     echo "Can't acquire cpu temperature!";
