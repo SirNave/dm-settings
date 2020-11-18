@@ -33,8 +33,13 @@ for (( i=0; i<${#disks[@]}; i++ )); do
         disk_info_label=6;
     fi
 
-    disk_mapping="${disk_mapping}\ndisk \"${disk_info[disk_info_path]}\" {\n        format = \" ⛁ ${disk_info[disk_info_label]} %avail \"\n}\n";
-    disk_monitoring="${disk_monitoring}order \+= \"disk ${disk_info[disk_info_path]}\"\n";
+    if [ ${#disk_info[@]} -ge 7 ]
+    then
+        disk_mapping="${disk_mapping}\ndisk \"${disk_info[disk_info_path]}\" {\n        format = \" ⛁ ${disk_info[disk_info_label]} %avail \"\n}\n";
+        disk_monitoring="${disk_monitoring}order \+= \"disk ${disk_info[disk_info_path]}\"\n";
+    else
+        echo "Partition aparentely as not mounted"
+    fi
 done
 
 disk_monitoring_replace="#DiskMonitoring";
@@ -229,4 +234,45 @@ then
     sed -i "s,$cpu_temperature_monitoring_replace,$cpu_temperature_monitoring,g" "${config_repo_i3status}/i3status/config";
     sed -i "s,$cpu_temperature_mapping_replace,$cpu_temperature_mapping,g" "${config_repo_i3status}/i3status/config";
 fi
+echo "-------------------------------------------------";
+
+echo "Searching wifi";
+echo "-------------------------------------------------";
+
+IFS=$'\n';
+wifi=($(lspci | grep -i wireless));
+IFS="$oldifs";
+
+if [ ! -z "${wifi}" ]
+then
+    echo "Found "${wifi[0]};
+    
+    wifi_monitoring_replace="#WirelessMonitoring";
+    wifi_monitoring="order += \"wireless _first_\"";
+    
+    sed -i "s,$wifi_monitoring_replace,$wifi_monitoring,g" "${config_repo_i3status}/i3status/config";
+else
+    echo "No Wireless network found";    
+fi
+echo "-------------------------------------------------";
+
+echo "Searching battery";
+echo "-------------------------------------------------";
+
+IFS=$'\n';
+battery=($(acpi -ib | awk '!/power_supply/'));
+IFS="$oldifs";
+
+if [ ! -z "${battery}" ]
+then
+    echo "Found "${battery[0]};
+    
+    battery_monitoring_replace="#BatteryMonitoring";
+    battery_monitoring="order += \"battery all\"";
+    
+    sed -i "s,$battery_monitoring_replace,$battery_monitoring,g" "${config_repo_i3status}/i3status/config";
+else
+    echo "No battery found";    
+fi
+
 echo "-------------------------------------------------";
