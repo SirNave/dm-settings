@@ -1,0 +1,241 @@
+{
+    "layer": "top",
+    "position": "top",
+    // "mode": "dock",
+    "fixed-center": true,
+    "exclusive": true,
+    "passthrough": false,
+    "gtk-layer-shell": true,
+    "ipc": true,
+    "spacing": 0,
+    "height": 0,
+    "margin-left": 5,
+    "margin-right": 5,
+    "modules-left": [
+        "wlr/workspaces",
+        "hyprland/window"
+        // "hyprland/submap"
+    ],
+    "modules-center": [
+        "clock",
+        "network",
+        "mpris",
+        "custom/weather",
+        "tray"
+    ],
+    "modules-right": [
+        "memory",
+        "custom/temperature",
+        // "temperature",
+        "cpu",
+        "custom/drives",
+        "battery",
+        "backlight",
+        // "wireplumber",
+        // "hyprland/language",
+        "bluetooth",
+        "pulseaudio",
+        "pulseaudio#microphone"
+    ],
+    "hyprland/submap": {
+        "format": "✌️ {}",
+        "max-length": 8,
+        "tooltip": false
+    },
+    "custom/temperature": {
+        "tooltip" : true,
+        "format" : "{}",
+        "interval" : 1,
+        "restart-interval": 1,
+        "exec" : "~/.config/waybar/scripts/waybar-temp.sh",
+        "return-type" : "json"
+    },
+    "hyprland/language": {
+        "format": "Lang: {}",
+        "keyboard-name": "at-translated-set-2-keyboard"
+    },
+    "memory": {
+        "interval": 2,
+        "format": "<span font='14' rise='0pt'>{icon}</span>{used:0.1f}G/{total:0.1f}G",
+        "tooltip-format": "Used: {used:0.1f}G {percentage}%\nAvailable: {avail:0.1f}G\nTotal: {total:0.1f}G\nSWAP Used: {swapUsed:0.1f}G {swapPercentage}%\nSWAP Available: {swapAvail:0.1f}G\nSWAP Total: {swapTotal:0.1f}G"
+    },
+    "mpris": {
+        "interval": 1,
+        "format": "{player}:{status_icon} {artist} - {album} - {title}",
+        "format-paused": "{player}:{status_icon} <i>{artist} - {album} - {title}</i>",
+        "format-stopped": "{player}:{status_icon}",
+        "player-icons": {
+            "default": "▶",
+            "mpv": "🎵"
+        },
+        "status-icons": {
+            "paused": "⏸",
+            "playing": "▶",
+            "stopped": "stopped"
+        }
+        ,"ignored-players": ["firefox", "chromium", "edge"]
+    },
+    "temperature": {
+        //"thermal-zone": 1,
+        "interval": 1,
+        "hwmon-path": "/sys/class/hwmon/hwmon3/temp1_input",
+        "critical-threshold": 74,
+        "format-critical": "  {temperatureC}°C",
+        "format": "{icon}  {temperatureC}°C",
+        "format-icons": ["", "", ""],
+        "max-length": 7,
+        "min-length": 7
+    },
+    "cpu": {
+        "interval": 1,      
+        "format": "{max_frequency:>}GHz <span color=\"darkgray\">| {usage}%</span>",
+        "on-click": "kitty -e htop --sort-key PERCENT_CPU",
+        "format-icons": ["▁", "▂", "▃", "▄", "▅", "▆", "▇", "█"]
+    },
+    "network": {
+        "interval": 1,
+        // "interface": "wlp2s0", // (Optional) To force the use of this interface
+        "on-click": "nm-connection-editor",
+        "on-click-right": "killall nm-connection-editor",
+        "format": "{ifname} {bandwidthUpBytes}Up {bandwidthDownBytes}Down",
+        "format-wifi": "{essid} ({signalStrength}%) ",
+        "format-ethernet": "<span font='15' rise='-3pt'></span>{bandwidthUpBytes:>} <span font='15' rise='-3pt'></span>{bandwidthDownBytes:>}",
+        "format-disconnected": "Disconnected ⚠",
+        "tooltip-format": "{ifname} via {gwaddr} \n\n{bandwidthUpBytes}\tUp\n{bandwidthDownBytes}\tDown",
+        "tooltip-format-wifi": "{essid} \n\nSignal:\t({signalStrength}%){signaldBm}dBm\nFrequency:\t{frequency}MHz\nInterface:\t{ifname}\nIP:\t{ipaddr}/{cidr}\nMask:\t{netmask}\nGateway:\t{gwaddr}\n\n{bandwidthUpBytes}\tUp\n{bandwidthDownBytes}\tDown",
+        "tooltip-format-ethernet": "Interface:\t{ifname}\nIP:\t{ipaddr}/{cidr}\nMask:\t{netmask}\nGateway:\t{gwaddr}\n\n{bandwidthUpBytes}\tUp\n{bandwidthDownBytes}\tDown",
+        "tooltip-format-disconnected": "Disconnected ⚠"
+    },
+
+    "hyprland/window": {
+        "format": "{}",
+        "separate-outputs": true
+    },
+    "wlr/workspaces": {
+        "disable-scroll": true,
+        "all-outputs": false,
+        "on-click": "activate",
+        "format": "{icon}",
+        "sort-by-number": true,
+        "persistent_workspaces": {
+            "1": [],
+            "2": [],
+            "3": [],
+            "4": [],
+            "5": [],
+            "6": [],
+            "7": [],
+            "8": [],
+            "9": [],
+            "10": [],
+            "urgent": "",
+            "active": "",
+            "default": ""
+        }
+    },
+    "custom/updates": {
+        "exec": "(pacman -Qu ; trizen -Qua) | wc -l",
+        "interval": 7200,
+        "format": " {}"
+    },
+   "custom/weather" : {
+        "tooltip" : true,
+        "format" : "{}",
+        "interval" : 1,
+        "exec" : "~/.config/waybar/scripts/waybar-wttr.py",
+        "return-type" : "json"
+    },
+    "custom/drives" : {
+         "tooltip" : true,
+         "format" : "{}",
+         "interval" : 1,
+         "exec" : "~/.config/waybar/scripts/waybar-drives.sh",
+         "return-type" : "json",
+         "escape": false
+     },
+    "tray": {
+        "icon-size": 13,
+        "spacing": 10
+    },
+    "clock": {
+        "format": "{:%A <span font='8' rise='0pt'></span> %H:%M:%S <span font='8' rise='1pt'></span> %d/%m/%y}",
+        "interval" : 1,
+        "tooltip" : true,
+        "tooltip-format": "<big>{:%Y %B %A}</big>\n<tt><small>{calendar}</small></tt>"
+    },
+    "backlight": {
+        "device": "intel_backlight",
+        "format": "{icon} {percent}%",
+        "format-icons": ["", "", ""],
+        "on-scroll-up": "brightnessctl set 1%+",
+        "on-scroll-down": "brightnessctl set 1%-",
+        "min-length": 6
+    },
+    "battery": {
+        "states": {
+            "good": 95,
+            "warning": 30,
+            "critical": 20
+        },
+        "format": "{icon} {capacity}%",
+        "format-charging": " {capacity}%",
+        "format-plugged": " {capacity}%",
+        "format-alt": "{time} {icon}",
+        "format-icons": ["", "", "", "", "", "", "", "", "", "", ""]
+    },
+    "pulseaudio": {
+        "format": "<span font='14' rise='-1pt'>{icon}</span> {volume}%",
+        "format-muted": "<span font='14' rise='-1pt'></span> Muted",
+        "tooltip": true,
+        "on-click": "pamixer -t",
+        "on-click-middle": "pavucontrol -t 3",
+        "on-click-right": "killall pavucontrol",
+        "on-scroll-up": "pamixer -i 5",
+        "on-scroll-down": "pamixer -d 5",
+        "scroll-step": 5,
+        "format-icons": {
+            "headphone": "",
+            "hands-free": "",
+            "headset": "",
+            "phone": "",
+            "portable": "",
+            "car": "",
+            "default": ["", "", ""]
+        }
+    },
+    "pulseaudio#microphone": {
+        "format": "{format_source}",
+        "format-source": "<span font='10' rise='1pt'></span> {volume}%",
+        "format-source-muted": "<span font='14' rise='1pt'></span> Muted",
+        "on-click": "pamixer --default-source -t",
+        "on-click-middle": "pavucontrol -t 4",
+        "on-click-right": "killall pavucontrol",
+        "on-scroll-up": "pamixer --default-source -i 5",
+        "on-scroll-down": "pamixer --default-source -d 5",
+        "scroll-step": 5
+    },
+    "bluetooth": {
+        // "controller": "controller1", // specify the alias of the controller if there are more than 1 on the system
+        "on-click": "blueman-manager",
+        "on-click-right": "killall blueman-manager",
+        "format": " {status}",
+        // "format-disabled": " disabled", // an empty format will hide the module
+        // "format-off": " off", // an empty format will hide the module
+        // "format-on": " on", // an empty format will hide the module
+        "format-connected": " {num_connections}",
+        // "format-connected": " {device_alias}",
+        //"format-connected-battery": " {device_alias} {device_battery_percentage}%", // Show device connected with battery info
+        //"format-device-preference": [ "device1", "device2" ], // preference list deciding the displayed device
+        "tooltip-format": "{controller_alias}\t{controller_address}\t{controller_address_type}\n\n{num_connections} connected",
+        "tooltip-format-connected": "{controller_alias}\t{controller_address}\t{controller_address_type}\n\n{num_connections} connected\n\n{device_enumerate}",
+        "tooltip-format-disabled": "{controller_alias}\t{controller_address}\t{controller_address_type}\n\n disabled",
+        "tooltip-format-enumerate-connected": "{device_alias}\t{device_address}\t{device_address_type}",
+        "tooltip-format-enumerate-connected-battery": "{device_alias}\t{device_address}\t{device_address_type}\t{device_battery_percentage}%"
+    },
+    "wireplumber": {
+        "format": "{volume}% {icon}",
+        "format-muted": "",
+        "on-click": "helvum",
+        "format-icons": ["", "", ""]
+    }
+}
