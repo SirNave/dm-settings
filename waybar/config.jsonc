@@ -13,8 +13,8 @@
     "margin-right": 5,
     "modules-left": [
         "wlr/workspaces",
-        "hyprland/window"
-        // "hyprland/submap"
+        "hyprland/window",
+        "hyprland/submap"
     ],
     "modules-center": [
         "clock",
@@ -38,8 +38,7 @@
         "pulseaudio#microphone"
     ],
     "hyprland/submap": {
-        "format": "✌️ {}",
-        "max-length": 8,
+        "format": "{}",
         "tooltip": false
     },
     "custom/temperature": {
@@ -61,19 +60,21 @@
     },
     "mpris": {
         "interval": 1,
-        "format": "{player}:{status_icon} {artist} - {album} - {title}",
-        "format-paused": "{player}:{status_icon} <i>{artist} - {album} - {title}</i>",
-        "format-stopped": "{player}:{status_icon}",
+        "format": "{player_icon}:{status_icon} {title}",
+        "format-paused": "{player_icon}:{status_icon} <i>{title}</i>",
+        "format-stopped": "{player_icon}:{status_icon}",
         "player-icons": {
             "default": "▶",
-            "mpv": "🎵"
+            "mpv": "🎵",
+            "spotify": "<span font='10' rise='0pt'></span>"
         },
         "status-icons": {
-            "paused": "⏸",
-            "playing": "▶",
+            "paused": " ⏸",
+            "playing": " ▶",
             "stopped": "stopped"
         }
-        ,"ignored-players": ["firefox", "chromium", "edge"]
+        ,
+        "ignored-players": ["firefox", "chromium", "edge"]
     },
     "temperature": {
         //"thermal-zone": 1,
@@ -88,7 +89,7 @@
     },
     "cpu": {
         "interval": 1,      
-        "format": "{max_frequency:>}GHz <span color=\"darkgray\">| {usage}%</span>",
+        "format": "{max_frequency:>}GHz | {usage}%",
         "on-click": "kitty -e htop --sort-key PERCENT_CPU",
         "format-icons": ["▁", "▂", "▃", "▄", "▅", "▆", "▇", "█"]
     },
@@ -113,25 +114,10 @@
     },
     "wlr/workspaces": {
         "disable-scroll": true,
-        "all-outputs": false,
+        "all-outputs": true,
         "on-click": "activate",
         "format": "{icon}",
-        "sort-by-number": true,
-        "persistent_workspaces": {
-            "1": [],
-            "2": [],
-            "3": [],
-            "4": [],
-            "5": [],
-            "6": [],
-            "7": [],
-            "8": [],
-            "9": [],
-            "10": [],
-            "urgent": "",
-            "active": "",
-            "default": ""
-        }
+        "sort-by-number": true
     },
     "custom/updates": {
         "exec": "(pacman -Qu ; trizen -Qua) | wc -l",
@@ -158,7 +144,7 @@
         "spacing": 10
     },
     "clock": {
-        "format": "{:%A <span font='8' rise='0pt'></span> %H:%M:%S <span font='8' rise='1pt'></span> %d/%m/%y}",
+        "format": "{:%A <span font='13' rise='-1pt'></span> %H:%M:%S <span font='8' rise='1pt'></span> %d/%m/%y}",
         "interval" : 1,
         "tooltip" : true,
         "tooltip-format": "<big>{:%Y %B %A}</big>\n<tt><small>{calendar}</small></tt>"
@@ -185,7 +171,7 @@
     },
     "pulseaudio": {
         "format": "<span font='14' rise='-1pt'>{icon}</span> {volume}%",
-        "format-muted": "<span font='14' rise='-1pt'></span> Muted",
+        "format-muted": "<span font='14' rise='-1pt'></span> Muted",
         "tooltip": true,
         "on-click": "pamixer -t",
         "on-click-middle": "pavucontrol -t 3",
@@ -194,13 +180,13 @@
         "on-scroll-down": "pamixer -d 5",
         "scroll-step": 5,
         "format-icons": {
-            "headphone": "",
-            "hands-free": "",
+            "headphones": "",
+            "handsfree": "",
             "headset": "",
             "phone": "",
             "portable": "",
             "car": "",
-            "default": ["", "", ""]
+            "default": ["", "", "", "", "", "", ""]
         }
     },
     "pulseaudio#microphone": {

@@ -38,6 +38,7 @@ tooltip {
 #tray,
 #mpris,
 #cpu,
+#submap,
 #backlight {
     background: #1e1e2e;
     padding: 0px 10px;
@@ -52,7 +53,7 @@ tooltip {
     margin-left: 3px;
 }
 
-#window {
+#window, #submap {
     border-radius: 10px;
     margin-left: 3px;
     margin-right: 3px;
@@ -72,33 +73,46 @@ tooltip {
 
 #workspaces button {
     padding: 5px;
-    color: #313244;
+    color: #4953ff;
     margin-right: 5px;
 }
 
-#workspaces button.active {
-    color: #a6adc8;
-}
-
-#workspaces button.visible,
+#workspaces button.active,
 #workspaces button.focused {
-    color: #a6adc8;
-    background: #89dceb;
-    border-radius: 10px;
+    color: #cdd6f4;
+    background: #313244;
+    border-radius: 5px;
 }
 
-#workspaces button.urgent,
-#workspaces button.visible,
+#workspaces button.visible {
+    color: #a6adc8;
+    background: #00d9ff;
+    border-radius: 5px;
+}
+
+
+#workspaces button.urgent {
+    color: #cdd6f4;
+    background: #ff002b;
+    border-radius: 5px;
+}
+
+#workspaces button.visible {
+    color: #11111b;
+    background: #00ff55;
+    border-radius: 5px;
+}
+
 #workspaces button.hidden {
     color: #11111b;
-    background: #eba0ac;
-    border-radius: 4px;
+    background: #ffd900;
+    border-radius: 5px;
 }
 
 #workspaces button:hover {
-    background: #11111b;
     color: #cdd6f4;
-    border-radius: 2px;
+    background: #11111b;
+    border-radius: 5px;
 }
 
 #memory {

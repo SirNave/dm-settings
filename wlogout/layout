@@ -12,13 +12,13 @@
 }
 {
     "label" : "logout",
-    "action" : "loginctl terminate-user $USER",
+    "action" : "loginctl kill-user $USER",
     "text" : "Logout",
     "keybind" : "e"
 }
 {
     "label" : "shutdown",
-    "action" : "shutdown -p now",
+    "action" : "shutdown -P now",
     "text" : "Shutdown",
     "keybind" : "s"
 }

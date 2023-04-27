@@ -1,0 +1,5 @@
+#!/bin/bash
+sleep 1
+killall radeon-profile
+sleep 2
+radeon-profile &
