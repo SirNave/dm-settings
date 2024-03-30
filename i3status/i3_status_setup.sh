@@ -77,7 +77,7 @@ for (( i=0; i<=${#gpus[@]}; i++ )); do
     if [ -f ${gpu_temp_input} ]
     then
         gpu_monitoring="${gpu_monitoring}order += \"cpu_temperature ${cpu_temperature_index}\"";
-        gpu_mapping="${gpu_mapping}\ncpu_temperature ${cpu_temperature_index} {\n        format = \"🌡️ Gpu %degrees °C\"\n        path = \"${gpu_temp_input}\"\n        max_threshold = 65\n}";
+        gpu_mapping="${gpu_mapping}\ncpu_temperature ${cpu_temperature_index} {\n        format = \"Gpu %degrees °C\"\n        path = \"${gpu_temp_input}\"\n        max_threshold = 65\n}";
 
         cpu_temperature_index=$((SUM=${cpu_temperature_index}+1));
     else
@@ -121,7 +121,7 @@ echo "Searching nvme temperature";
 echo "-------------------------------------------------";
 
 IFS=$'\n';
-nvmes=($(lspci | grep -i nvme));
+nvmes=($(lspci | grep -i Non-Volatile));
 IFS="$oldifs";
 
 if [ ! -z "${nvmes}" ]
@@ -133,13 +133,13 @@ then
         nvme_info=(${nvmes[i]});
         echo "Found "${nvmes[i]};
 
-        nvme_temp_input="/sys/bus/pci/devices/0000:${nvme_info[0]}/hwmon/hwmon?/temp1_input";
+        nvme_temp_input="/sys/bus/pci/devices/0000:${nvme_info[0]}/nvme/nvme?/hwmon?/temp1_input";
 
         # Check if can get the temps
         if [ -f ${nvme_temp_input} ]
         then
             nvme_monitoring="${nvme_monitoring}order += \"cpu_temperature ${cpu_temperature_index}\"";
-            nvme_mapping="${nvme_mapping}\ncpu_temperature ${cpu_temperature_index} {\n        format = \"🌡️ Nvme %degrees °C\"\n        path = \"${nvme_temp_input}\"\n        max_threshold = 65\n}";
+            nvme_mapping="${nvme_mapping}\ncpu_temperature ${cpu_temperature_index} {\n        format = \"Nvme %degrees °C\"\n        path = \"${nvme_temp_input}\"\n        max_threshold = 65\n}";
 
             cpu_temperature_index=$((SUM=${cpu_temperature_index}+1));
         else
@@ -167,41 +167,26 @@ cpu_temperature_monitoring="";
 
 echo "Trying get cpu temperatures"
 echo "-------------------------------------------------";
-cpu_temp_input="/sys/bus/pci/devices/0000:00:18.3/hwmon/hwmon?/temp1_input";
 
-if [ -f ${cpu_temp_input} ]
-then
-    cpu_temp_label=$(cat /sys/bus/pci/devices/0000:00:18.3/hwmon/hwmon?/temp1_label);
+echo "Searching Cpu Temps";
+echo "-------------------------------------------------";
+
+oldifs="$IFS";
+IFS=$'\n';
+cpus_temp=($(ls /sys/bus/pci/devices/0000:00:18.3/hwmon/hwmon?/temp?_input));
+IFS="$oldifs";
+
+for (( i=0; i<${#cpus_temp[@]}; i++ )); do
+    cpu_temp_input=(${cpus_temp[i]});
+    cpu_temp_label=($(cat ${cpus_temp[i]//input/label}));
+
+    echo "Found "$cpu_temp_input;
+    echo "Label "$cpu_temp_label;
+
     cpu_temperature_mapping="${cpu_temperature_mapping}\ncpu_temperature ${cpu_temperature_index} {\n        format = \" ${cpu_temp_label} %degrees °C\"\n        path = \"${cpu_temp_input}\"\n        max_threshold = 65\n}\n";
     cpu_temperature_monitoring="${cpu_temperature_monitoring}order += \"cpu_temperature ${cpu_temperature_index}\"\n";
-    cpu_temperature_index=$((SUM=${cpu_temperature_index}+1));
-else
-    echo "Can't acquire cpu temperature!";
-fi
-
-cpu_temp_input="/sys/bus/pci/devices/0000:00:18.3/hwmon/hwmon?/temp2_input";
-
-if [ -f ${cpu_temp_input} ]
-then
-    cpu_temp_label=$(cat /sys/bus/pci/devices/0000:00:18.3/hwmon/hwmon?/temp2_label);
-    cpu_temperature_mapping="${cpu_temperature_mapping}\ncpu_temperature ${cpu_temperature_index} {\n        format = \" ${cpu_temp_label} %degrees °C\"\n        path = \"${cpu_temp_input}\"\n        max_threshold = 65\n}\n";
-    cpu_temperature_monitoring="${cpu_temperature_monitoring}order += \"cpu_temperature ${cpu_temperature_index}\"\n";
-    cpu_temperature_index=$((SUM=${cpu_temperature_index}+1));
-else
-    echo "Can't acquire cpu temperature!";
-fi
-
-cpu_temp_input="/sys/bus/pci/devices/0000:00:18.3/hwmon/hwmon?/temp3_input";
-
-if [ -f ${cpu_temp_input} ]
-then
-    cpu_temp_label=$(cat /sys/bus/pci/devices/0000:00:18.3/hwmon/hwmon?/temp3_label);
-    cpu_temperature_mapping="${cpu_temperature_mapping}\ncpu_temperature ${cpu_temperature_index} {\n        format = \" ${cpu_temp_label} %degrees °C\"\n        path = \"${cpu_temp_input}\"\n        max_threshold = 65\n}\n";
-    cpu_temperature_monitoring="${cpu_temperature_monitoring}order += \"cpu_temperature ${cpu_temperature_index}\"\n";
-    cpu_temperature_index=$((SUM=${cpu_temperature_index}+1));
-else
-    echo "Can't acquire cpu temperature!";
-fi
+    cpu_temperature_index=$((SUM=${cpu_temperature_index}+1));    
+done
 
 cpu_temperature_input="/sys/devices/platform/nct6775.656/hwmon/hwmon?/temp2_input";
 

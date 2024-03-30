@@ -1,3 +1,4 @@
+
 # i3 config file (v4)
 # Please see http://i3wm.org/docs/userguide.html for a complete reference!
 
@@ -27,7 +28,8 @@ font xft:URWGothic-Book 10
 floating_modifier $mod
 
 # start a terminal
-bindsym $mod+Return exec terminal
+#bindsym $mod+Return exec terminal
+bindsym $mod+Return exec kitty
 
 # kill focused window
 bindsym $mod+Shift+q kill
@@ -48,10 +50,10 @@ bindsym $mod+z exec --no-startup-id morc_menu
 #exec --no-startup-id pulseaudio
 #exec --no-startup-id pa-applet
 bindsym $mod+Ctrl+m exec pavucontrol
-exec --no-startup-id blueman-tray # Bluetooth icon
+exec --no-startup-id blueman-applet # Bluetooth icon
 
 #### Default applications ####
-exec --no-startup-id ckb-next
+exec --no-startup-id ckb-next -b
 exec --no-startup-id radeon-profile
 
 ################################################################################################
@@ -66,21 +68,30 @@ exec --no-startup-id radeon-profile
 # Alsa control
 bindsym Ctrl+KP_Add exec --no-startup-id amixer set 'Master' 5%+ #increase sound volume
 bindsym Ctrl+KP_Subtract exec --no-startup-id amixer set 'Master' 5%- #decrease sound volume
+bindsym Ctrl+KP_Plus exec --no-startup-id amixer set 'Master' 5%+ #increase sound volume
+bindsym Ctrl+KP_Minus exec --no-startup-id amixer set 'Master' 5%- #decrease sound
 bindsym Ctrl+plus exec --no-startup-id amixer set 'Master' 5%+ #increase sound volume
-bindsym Ctrl+minus exec --no-startup-id amixer set 'Master' 5%+ #decrease sound
+bindsym Ctrl+minus exec --no-startup-id amixer set 'Master' 5%- #decrease sound
+
 
 # Media player controls
 bindsym Ctrl+KP_Decimal exec playerctl play-pause
 #bindsym XF86AudioPause exec playerctl pause
 bindsym Ctrl+KP_Multiply exec playerctl next
 bindsym Ctrl+KP_Divide exec playerctl previous
+bindsym Ctrl+KP_Asterisk exec playerctl next
+bindsym Ctrl+KP_Slash exec playerctl previous
 
 # Screen brightness controls
 # bindsym XF86MonBrightnessUp exec "xbacklight -inc 10; notify-send 'brightness up'"
 # bindsym XF86MonBrightnessDown exec "xbacklight -dec 10; notify-send 'brightness down'"
 
 # Screen setup
-exec ~/.screenlayout/side-by-side.sh
+# exec ~/.screenlayout/side-by-side.sh
+# exec ~/.screenlayout/dual-monitors.sh
+exec sh ~/.screenlayout/dual-monitors-alt.sh
+
+# exec xrandr -r 75
 
 # Start Applications
 bindsym $mod+Ctrl+b exec terminal -e 'bmenu'
@@ -90,6 +101,7 @@ bindsym $mod+F3 exec pcmanfm
 #bindsym $mod+Shift+w exec --no-startup-id "rofi -modi 'run,windowcd,window' -show window -lines 15 -show-icons -sidebar-mode"
 bindsym $mod+Shift+w exec --no-startup-id rofi -show window -config ~/.config/rofi/rofi.rasi
 bindsym $mod+d exec --no-startup-id rofi -show drun -config ~/.config/rofi/rofi.rasi
+bindsym $mod+r exec --no-startup-id rofi -show drun -theme ~/.config/rofi/global/rofi.rasi
 # bindsym $mod+F3 exec ranger
 bindsym $mod+Shift+F3 exec gksu pcmanfm
 bindsym $mod+F5 exec terminal -e 'mocp'
@@ -254,6 +266,8 @@ for_window [class="Skype"] floating disable border pixel 1
 for_window [class="Timeset-gui"] floating enable border normal
 for_window [class="(?i)virtualbox"] floating enable border normal
 for_window [class="Xfburn"] floating enable
+for_window [instance="TheDivision.exe"] floating enable
+for_window [instance="TheDivision.exe"] border none
 
 # switch to workspace with urgent window automatically
 for_window [urgent=latest] focus
@@ -288,7 +302,7 @@ mode "$mode_system" {
 }
 
 # Resize window (you can also use the mouse for that)
-bindsym $mod+r mode "resize"
+bindsym $Mod1+r mode "resize"r
 mode "resize" {
         # These bindings trigger as soon as you enter the resize mode
         # Pressing left will shrink the window’s width.
@@ -331,10 +345,11 @@ exec --no-startup-id clipit
 # exec_always --no-startup-id sbxkb
 # exec --no-startup-id start_conky_maia
 # exec --no-startup-id start_conky_green
-exec --no-startup-id xautolock -time 10 -locker blurlock -notify 60 -notifier dunst
+#exec --no-startup-id xautolock -time 10 -locker blurlock -notify 60 -notifier dunst
+exec --no-startup-id xidlehook --not-when-fullscreen --not-when-audio --timer 600 'blurlock' ''
 exec_always --no-startup-id ff-theme-util
 exec_always --no-startup-id fix_xcursor
-exec_always --no-startup-id dunst
+exec_always --no-startup-id d
 #exec_always --no-startup-id setxkbmap -model abnt2 -layout br -variant abnt2
 exec --no-startup-id solaar -w hide
 
@@ -379,6 +394,7 @@ bar {
 #	status_command xmobar
 #	status_command polybar
 	position top
+        tray_output primary
 
 ## please set your primary output first. Example: 'xrandr --output eDP1 --primary'
 #	tray_output primary
@@ -390,15 +406,15 @@ bar {
 	strip_workspace_numbers yes
 
     colors {
-    	background #121212
-    	statusline #03dac6
-    	separator  #bb86fc
+    	#background #121212
+    	statusline #60f981
+    	separator  #fb7eff
 
 #                          border  backgr. text
-    	focused_workspace  #121212 #03dac6 #121212
-    	active_workspace   #bb86fc #121212 #bb86fc
-    	inactive_workspace #03dac6 #121212 #03dac6
-        binding_mode       #03dac6 #000000 #03dac6
+    	focused_workspace  #121212 #60f981 #121212
+    	active_workspace   #fb7eff #121212 #fb7eff
+    	inactive_workspace #60f981 #121212 #60f981
+        binding_mode       #60f981 #000000 #60f981
     	urgent_workspace   #121212 #cf6679 #ffffff
 
     }
@@ -409,11 +425,11 @@ bindsym $mod+m bar mode toggle
 
 # Theme colors
 # class                         border        backgr.       text          indic.        child_border
-  client.focused 	        #121212       #03dac6       #121212       #121212       #03dac6
-  client.focused_inactive       #121212       #bb86fc       #121212       #121212       #bb86fc
-  client.unfocused 	        #bb86fc       #121212       #bb86fc       #bb86fc       #121212
-  client.urgent 	        #121212       #cf6679       #121212       #cf6679       #cf6679
-  client.placeholder            #03dac6       #121212       #03dac6       #121212       #121212
+  client.focused 	        #121212       #60f981       #121212       #121212       #60f981
+  client.focused_inactive       #121212       #fb7eff       #121212       #121212       #fb7eff
+  client.unfocused 	        #fb7eff       #121212       #fb7eff       #fb7eff       #121212
+  client.urgent 	        #121212       #fd3000       #121212       #fd3000       #fd3000
+  client.placeholder            #60f981       #121212       #60f981       #121212       #121212
   client.background             #121212
 
 #############################
