@@ -12,7 +12,7 @@
     "margin-left": 5,
     "margin-right": 5,
     "modules-left": [
-        "wlr/workspaces",
+        "hyprland/workspaces",
         "hyprland/window",
         "hyprland/submap"
     ],
@@ -100,7 +100,7 @@
         "on-click-right": "killall nm-connection-editor",
         "format": "{ifname} {bandwidthUpBytes}Up {bandwidthDownBytes}Down",
         "format-wifi": "{essid} ({signalStrength}%) ",
-        "format-ethernet": "<span font='15' rise='-3pt'></span>{bandwidthUpBytes:>} <span font='15' rise='-3pt'></span>{bandwidthDownBytes:>}",
+        "format-ethernet": "<span font='15' rise='-3pt'></span>  {bandwidthUpBytes:4}  <span font='15' rise='-3pt'></span>  {bandwidthDownBytes:4}",
         "format-disconnected": "Disconnected ⚠",
         "tooltip-format": "{ifname} via {gwaddr} \n\n{bandwidthUpBytes}\tUp\n{bandwidthDownBytes}\tDown",
         "tooltip-format-wifi": "{essid} \n\nSignal:\t({signalStrength}%){signaldBm}dBm\nFrequency:\t{frequency}MHz\nInterface:\t{ifname}\nIP:\t{ipaddr}/{cidr}\nMask:\t{netmask}\nGateway:\t{gwaddr}\n\n{bandwidthUpBytes}\tUp\n{bandwidthDownBytes}\tDown",
@@ -112,12 +112,18 @@
         "format": "{}",
         "separate-outputs": true
     },
-    "wlr/workspaces": {
+    "hyprland/workspaces": {
         "disable-scroll": true,
-        "all-outputs": true,
+        "all-outputs": false,
         "on-click": "activate",
-        "format": "{icon}",
-        "sort-by-number": true
+        "format": "{name}",
+        "format-icons": {
+          "urgent": "",
+          "active": "",
+          "default": ""
+        },
+        "sort-by-number": true,
+        "active-only": false
     },
     "custom/updates": {
         "exec": "(pacman -Qu ; trizen -Qua) | wc -l",
@@ -142,12 +148,30 @@
     "tray": {
         "icon-size": 13,
         "spacing": 10
-    },
+    },   
     "clock": {
-        "format": "{:%A <span font='13' rise='-1pt'></span> %H:%M:%S <span font='8' rise='1pt'></span> %d/%m/%y}",
         "interval" : 1,
-        "tooltip" : true,
-        "tooltip-format": "<big>{:%Y %B %A}</big>\n<tt><small>{calendar}</small></tt>"
+        "format": "{:%A <span font='13' rise='-1pt'></span> %H:%M:%OS <span font='8' rise='1pt'></span> %d/%m/%y}",
+        "format-alt": "{:%A, %B %d, %Y (%R)}  ",
+        "tooltip-format": "<tt><small>{calendar}</small></tt>",
+        "calendar": {
+            "mode"          : "month",
+            "mode-mon-col"  : 3,
+            "weeks-pos"     : "right",
+            "on-scroll"     : 1,
+            "format": {
+                "months":     "<span color='#ffead3'><b>{}</b></span>",
+                "days":       "<span color='#ecc6d9'><b>{}</b></span>",
+                "weeks":      "<span color='#99ffdd'><b>W{}</b></span>",
+                "weekdays":   "<span color='#ffcc66'><b>{}</b></span>",
+                "today":      "<span color='#ff6699'><b><u>{}</u></b></span>"
+            }
+        },
+        "actions":  {
+            "on-click-right": "mode",
+            "on-scroll-up": "shift_up",
+            "on-scroll-down": "shift_down"
+        }
     },
     "backlight": {
         "device": "intel_backlight",

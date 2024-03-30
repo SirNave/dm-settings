@@ -24,8 +24,8 @@
     // Active
     active-background:           var(background);
     active-foreground:           var(urgent);
-    selected-active-background:  var(selected);
-    selected-active-foreground:  var(urgent);
+    selected-active-background:  var(urgent);
+    selected-active-foreground:  var(selected);
     alternate-active-background: var(alternate-background);
     alternate-active-foreground: var(urgent);
     // Urgent
@@ -83,11 +83,6 @@ listview {
     border-radius: 0.3em;
 }
 
-element-text {
-    background-color: inherit;
-    text-color: inherit;
-}
-
 element {
     padding: 1px;
     border-radius: 0.2em;
@@ -102,6 +97,13 @@ element-icon {
     border: 0;
     border-color: @transparent;
     background-color: transparent;
+}
+
+element-text {
+    border: 0;
+    text-color: inherit;
+    border-color: inherit;
+    background-color: @transparent;
 }
 
 element normal {
@@ -140,6 +142,7 @@ element selected.urgent {
 element selected.active {
     background-color: var(selected-active-background);
     text-color:       var(selected-active-foreground);
+    //text-color:       red;
 }
 
 element alternate {
