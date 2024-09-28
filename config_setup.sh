@@ -125,7 +125,8 @@ function configure_i3_wm {
 function choose_wm {
     echo "";
     # Greetings!
-    echo "###################################################################################################
+    echo "
+###################################################################################################
 |                                                                                                 |
 |  Hi there!                                                                                      |
 |                                                                                                 |
@@ -265,7 +266,7 @@ function install_dependencies {
         if [[ $INSTALLER_AUR_HELPER ]]
         then
             echo "AUR Help found, using $INSTALLER_AUR_HELPER!...";
-            $INSTALLER_AUR_HELPER -Sq $to_install;
+            $INSTALLER_AUR_HELPER -Sq --noconfirm $to_install;
         else
             echo "AUR Help nor found, using regular pacman command!!!...";
             sudo pacman -Sq $to_install
@@ -307,7 +308,7 @@ function choose_tasks {
             ;;
         2)
             #TODO: Install all dependencies...
-            install_dependencies "rofi rofi-calc kitty wlogout dunst hyprpicker waybar pavucontrol cliphist spotify code chromium swaylock wireplumber librnnoise-nu rnnoise noise-suppression-for-voice nerd-fonts blueman protonup-qt-bin";
+            install_dependencies "rofi playerctl rofi-calc python-requests python kitty wlogout dunst hyprpicker waybar pavucontrol cliphist spotify code chromium swaylock wireplumber librnnoise-nu rnnoise noise-suppression-for-voice nerd-fonts blueman protonup-qt-bin";
             choose_tasks;
             ;;
         3)
@@ -320,7 +321,7 @@ function choose_tasks {
             ;;
         5)
             choose_aur_helper;
-            install_dependencies "rofi rofi-calc kitty wlogout dunst hyprpicker waybar pavucontrol cliphist spotify code chromium swaylock wireplumber librnnoise-nu rnnoise noise-suppression-for-voice nerd-fonts blueman protonup-qt-bin";
+            install_dependencies "rofi playerctl rofi-calc python-requests python kitty wlogout dunst hyprpicker waybar pavucontrol cliphist spotify code chromium swaylock wireplumber librnnoise-nu rnnoise noise-suppression-for-voice nerd-fonts blueman protonup-qt-bin";
             choose_wm;
             choose_tasks;
             ;;
@@ -329,7 +330,7 @@ function choose_tasks {
             ;;
         *)
             echo "";
-            echo "-------------------------"        
+            echo "-------------------------";
             echo "--                     --";
             echo "--  Incorrect option!  --";
             echo "--                     --";
