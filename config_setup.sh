@@ -138,7 +138,7 @@ function choose_wm {
 
     read -rp "Do you want to continue? [y/n] " REPLY
     echo
-    if [[ $REPLY =~ ^[yY]$ ]]
+    if [[ $REPLY =~ ^[yYsS]$ ]]
     then
         echo "Moving on...";
     else
@@ -163,7 +163,7 @@ function choose_wm {
     elif [ $chosen_wm == 2 ]
     then
         configure_hyprland_wm;
-    elif [ $aur_helchosen_wmper == 3 ]
+    elif [ $chosen_wm == 3 ]
     then
         exit_script;
     else 
