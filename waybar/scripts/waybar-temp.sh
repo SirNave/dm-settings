@@ -21,7 +21,7 @@ do
     for temp_path in $temps_path
     do
 
-        if [ -e $temp_path ] ;
+        if [ -e $temp_path ];
         then
 
             temp_label=$(cat ${temp_path//input/label});
@@ -30,20 +30,20 @@ do
             temp_value="$(bc <<< "scale=2; ($temp_input/1000)")";
             new_line="$new_line$temp_label\t$temp_value°C\n";
 
-            if [ "$temp_label" == 'Tdie' ];
+            if [[ "$temp_label" == 'Tdie' || "$temp_label" == 'Package id 0' ]];
             then
                 main_text=$temp_value
             fi
         fi
     done
 
-    if [[ $new_line ]] ;
+    if [[ $new_line ]];
     then
         tooltip_text="$tooltip_text$new_input$new_line\n";
     fi
 done
 
-if [[ $main_text ]] ;
+if [[ $main_text ]];
 then
     main_text=" $main_text°C"
 else

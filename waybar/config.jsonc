@@ -88,7 +88,7 @@
         "min-length": 7
     },
     "cpu": {
-        "interval": 1,      
+        "interval": 1,
         "format": "{max_frequency:>}GHz | {usage}%",
         "on-click": "kitty -e htop --sort-key PERCENT_CPU",
         "format-icons": ["▁", "▂", "▃", "▄", "▅", "▆", "▇", "█"]
@@ -118,9 +118,9 @@
         "on-click": "activate",
         "format": "{name}",
         "format-icons": {
-          "urgent": "",
-          "active": "",
-          "default": ""
+            "urgent": "",
+            "active": "",
+            "default": ""
         },
         "sort-by-number": true,
         "active-only": false
@@ -130,7 +130,7 @@
         "interval": 7200,
         "format": " {}"
     },
-   "custom/weather" : {
+    "custom/weather" : {
         "tooltip" : true,
         "format" : "{}",
         "interval" : 1,
@@ -138,17 +138,17 @@
         "return-type" : "json"
     },
     "custom/drives" : {
-         "tooltip" : true,
-         "format" : "{}",
-         "interval" : 1,
-         "exec" : "~/.config/waybar/scripts/waybar-drives.sh",
-         "return-type" : "json",
-         "escape": false
-     },
+        "tooltip" : true,
+        "format" : "{}",
+        "interval" : 1,
+        "exec" : "~/.config/waybar/scripts/waybar-drives.sh",
+        "return-type" : "json",
+        "escape": false
+    },
     "tray": {
         "icon-size": 13,
         "spacing": 10
-    },   
+    },
     "clock": {
         "interval" : 1,
         "format": "{:%A <span font='13' rise='-1pt'></span> %H:%M:%OS <span font='8' rise='1pt'></span> %d/%m/%y}",

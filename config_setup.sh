@@ -9,7 +9,7 @@ function configure_hyprland_wm {
     echo "Creating Backup folder"
     mkdir "backup"
 
-    for item_config in "rofi" "dunst" "hypr" "kitty" "pipewire" "swaylock" "waybar" "wlogout"
+    for item_config in "rofi" "dunst" "hypr" "kitty" "pipewire" "waybar" "wlogout"
     do
         moving_creating_configs ${item_config}
     done
@@ -308,7 +308,7 @@ function choose_tasks {
             ;;
         2)
             #TODO: Install all dependencies...
-            install_dependencies "rofi playerctl rofi-calc python-requests python kitty wlogout dunst hyprpicker waybar pavucontrol cliphist spotify code chromium swaylock wireplumber librnnoise-nu rnnoise noise-suppression-for-voice nerd-fonts blueman protonup-qt-bin";
+            install_dependencies "rofi bc playerctl rofi-calc hyprlock brightnessctl python-requests python kitty wlogout dunst hyprpicker waybar pavucontrol cliphist spotify code chromium wireplumber librnnoise-nu rnnoise noise-suppression-for-voice nerd-fonts blueman protonup-qt-bin";
             choose_tasks;
             ;;
         3)
@@ -321,7 +321,7 @@ function choose_tasks {
             ;;
         5)
             choose_aur_helper;
-            install_dependencies "rofi playerctl rofi-calc python-requests python kitty wlogout dunst hyprpicker waybar pavucontrol cliphist spotify code chromium swaylock wireplumber librnnoise-nu rnnoise noise-suppression-for-voice nerd-fonts blueman protonup-qt-bin";
+            install_dependencies "rofi bc playerctl rofi-calc hyprlock brightnessctl python-requests python kitty wlogout dunst hyprpicker waybar pavucontrol cliphist spotify code chromium wireplumber librnnoise-nu rnnoise noise-suppression-for-voice nerd-fonts blueman protonup-qt-bin";
             choose_wm;
             choose_tasks;
             ;;
