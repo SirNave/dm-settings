@@ -23,8 +23,12 @@ do
 
         if [ -e $temp_path ];
         then
-
-            temp_label=$(cat ${temp_path//input/label});
+            if [ -e ${temp_path/input/label} ];
+            then
+                temp_label=$(cat ${temp_path/input/label});
+            else
+                temp_label='';
+            fi
             
             temp_input=$(cat ${temp_path});
             temp_value="$(bc <<< "scale=2; ($temp_input/1000)")";

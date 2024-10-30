@@ -1,7 +1,7 @@
 {
     "layer": "top",
     "position": "top",
-    // "mode": "dock",
+    "mode": "dock",
     "fixed-center": true,
     "exclusive": true,
     "passthrough": false,
@@ -74,7 +74,7 @@
             "stopped": "stopped"
         }
         ,
-        "ignored-players": ["firefox", "chromium", "edge"]
+        "ignored-players": ["firefox", "chromium", "edge", "vlc"]
     },
     "temperature": {
         //"thermal-zone": 1,
