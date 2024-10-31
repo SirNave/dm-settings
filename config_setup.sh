@@ -308,7 +308,7 @@ function choose_tasks {
             ;;
         2)
             #TODO: Install all dependencies...
-            install_dependencies "rofi dunst grim slurp bc playerctl rofi-calc hyprlock brightnessctl python-requests python kitty wlogout dunst hyprpicker waybar pavucontrol cliphist spotify code chromium wireplumber librnnoise-nu rnnoise noise-suppression-for-voice nerd-fonts blueman protonup-qt-bin";
+            install_dependencies "rofi wlsunset dunst grim slurp bc playerctl rofi-calc hyprlock brightnessctl python-requests python kitty wlogout dunst hyprpicker waybar pavucontrol cliphist spotify code chromium wireplumber librnnoise-nu rnnoise noise-suppression-for-voice nerd-fonts blueman protonup-qt-bin";
             choose_tasks;
             ;;
         3)
@@ -321,7 +321,7 @@ function choose_tasks {
             ;;
         5)
             choose_aur_helper;
-            install_dependencies "rofi dunst grim slurp bc playerctl rofi-calc hyprlock brightnessctl python-requests python kitty wlogout dunst hyprpicker waybar pavucontrol cliphist spotify code chromium wireplumber librnnoise-nu rnnoise noise-suppression-for-voice nerd-fonts blueman protonup-qt-bin";
+            install_dependencies "rofi wlsunset dunst grim slurp bc playerctl rofi-calc hyprlock brightnessctl python-requests python kitty wlogout dunst hyprpicker waybar pavucontrol cliphist spotify code chromium wireplumber librnnoise-nu rnnoise noise-suppression-for-voice nerd-fonts blueman protonup-qt-bin";
             choose_wm;
             choose_tasks;
             ;;
