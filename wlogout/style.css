@@ -62,5 +62,8 @@ button:hover, button:focus, button:active {
 }
 
 #hibernate {
-    background-image: image(url("/usr/share/wlogout/icons/hibernate.png"));
+    background-image: image(url("./hibernate.png"));
+}
+#hibernate:focus, #hibernate:active, #hibernate:hover {
+    background-image: image(url("./hibernate-hover.png"));
 }
