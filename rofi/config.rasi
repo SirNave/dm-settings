@@ -1,10 +1,20 @@
-/** Basic config file **/
-
 configuration {
+  display-calc:                   "Calc";
+  display-drun:                   "Applications";
+  display-run:                    "Run";
+  display-window:                 "All Windows";
+  display-windowcd:               "Current Window";
+  display-filebrowser:            "Files";
   show-icons: true;
-  icon-theme: "Papirus";
-  display-drun: "";
-  display-window: "﩯 ";
-  display-combi: "  ";
+  icon-theme: "Nordzy";
+	//modi: "drun,run,calc,windowcd,window"; // Add Current Desktop(windowcd) to list
+	modi: "drun,filebrowser,run,window";
+	lines: 15;
+	sidebar-mode: true;
+  threads: 0;
+  scroll-method: 0;
+  monitor: "primary";
+  terminal: "kitty";
 }
-@theme "themes/sidetab-nord.rasi"
+
+@theme "~/.config/rofi/theme.rasi"
