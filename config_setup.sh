@@ -55,73 +55,6 @@ function restore_configs_backup {
     rm -r backup;
 }
 
-function configure_i3_wm {
-    echo "";
-    echo "Starting I3 configs!";
-    
-    i3_path="/i3"
-    rofi_path="/rofi"
-    i3status_path="/i3status"
-    i3netSpeed_path="/i3netSpeed"
-
-    user_home=~
-    user_config_path="${user_home}/.config"
-    config_repo=${PWD}
-
-    config_repo_i3netSpeed=${config_repo}${i3netSpeed_path}
-    user_config_i3netSpeed=${user_config_path}${i3netSpeed_path}
-    config_repo_i3status=${config_repo}${i3status_path}
-    user_config_i3status=${user_config_path}${i3status_path}
-    config_repo_i3=${config_repo}${i3_path}
-    user_config_i3=${user_config_path}${i3_path}
-    config_repo_rofi=${config_repo}${rofi_path}
-    user_config_rofi=${user_config_path}${rofi_path}
-
-    echo "-------------------------------------------------"
-    echo "Run I3Status setup"
-    ./i3status/i3_status_setup.sh
-    echo "-------------------------------------------------"
-
-    echo "User HOME = ${user_home}"
-    echo "User configs patch = ${user_config_path}"
-    echo "User configs repo = ${config_repo}"
-
-    echo "-------------------------------------------------"
-    echo "-->Removing netSpeed files from ${user_config_i3netSpeed}<--"
-    rm -rfv "${user_config_i3netSpeed}"
-    echo "--->Creating SisLink to netSpeed files of ${config_repo_i3netSpeed}<---"
-
-    ln -sv "${config_repo_i3netSpeed}" "${user_config_path}"
-
-    echo "-------------------------------------------------"
-    echo "-->Removing i3 files from ${user_config_i3}<--"
-    rm -rfv "${user_config_i3}"
-    echo "--->Creating SisLink to i3 files of ${config_repo_i3}<---"
-
-    ln -sv "${config_repo_i3}" "${user_config_path}"
-
-    echo "-------------------------------------------------"
-    echo "-->Removing i3Status files from ${user_config_i3status}<--"
-    rm -rfv "${user_config_i3status}"
-    echo "--->Creating SisLink to i3Status files of ${config_repo_i3status}<---"
-
-    ln -sv "${config_repo_i3status}" "${user_config_path}"
-
-    echo "-------------------------------------------------"
-    echo "-->Removing rofi files from ${user_config_rofi}<--"
-    rm -rfv "${user_config_rofi}"
-    echo "--->Creating SisLink to rofi files of ${config_repo_rofi}<---"
-
-    ln -sv "${config_repo_rofi}" "${user_config_path}"
-
-    echo "End config script"
-    echo "-------------------------------------------------"
-
-    echo "Restarting I3"
-    i3-msg restart
-    echo "-------------------------------------------------"
-}
-
 function choose_wm {
     echo "";
     # Greetings!
@@ -149,32 +82,30 @@ function choose_wm {
     echo "";
     echo "-------------------------"
     echo "Choose wm to configure:";
-    echo " 1 - I3 WM - Unavailable";
-    echo " 2 - Hyprland WM";
-    echo " 3 - Exit";
+    echo " 1 - Hyprland WM";
+    echo " 2 - Exit";
 
     read chosen_wm;
     echo "-------------------------"
 
-    if [ $chosen_wm == 1 ]
-    then
-        #configure_i3_wm;
-        choose_wm;
-    elif [ $chosen_wm == 2 ]
-    then
-        configure_hyprland_wm;
-    elif [ $chosen_wm == 3 ]
-    then
-        exit_script;
-    else 
-        echo "";
-        echo "-------------------------";
-        echo "--                     --";
-        echo "--  Incorrect option!  --";
-        echo "--                     --";
-        echo "-------------------------";
-        choose_wm;
-    fi
+    case $chosen_wm in
+        1)
+            configure_hyprland_wm;
+            ;;
+        2)
+            exit_script;
+            ;;
+        *)
+            echo "";
+            echo "-------------------------";
+            echo "--                     --";
+            echo "--  Incorrect option!  --";
+            echo "--                     --";
+            echo "-------------------------";
+            echo "";
+            choose_wm;
+        ;;
+    esac
 }
 
 function choose_aur_helper {
@@ -186,23 +117,25 @@ function choose_aur_helper {
     read aur_helper;
     echo "-------------------------"
 
-    if [ $aur_helper == 1 ]
-    then
-        install_trizen;
-        export INSTALLER_AUR_HELPER="trizen"
-    elif [ $aur_helper == 2 ]
-    then
-        exit_script;
-    else 
-        echo "";
-        echo "-------------------------"        
-        echo "--                     --";
-        echo "--  Incorrect option!  --";
-        echo "--                     --";
-        echo "-------------------------";
-        echo "";
-        choose_aur_helper;
-    fi
+    case $aur_helper in
+        1)
+            install_trizen;
+            export INSTALLER_AUR_HELPER="trizen";
+            ;;
+        2)
+            exit_script;
+            ;;
+        *)
+            echo "";
+            echo "-------------------------";
+            echo "--                     --";
+            echo "--  Incorrect option!  --";
+            echo "--                     --";
+            echo "-------------------------";
+            echo "";
+            choose_aur_helper;
+        ;;
+    esac
 }
 
 function check_installed_package {
@@ -218,7 +151,7 @@ function install_trizen {
 
     if ! check_installed_package "trizen"
     then
-        echo "Installing trizen from 'git clone https://aur.archlinux.org/trizen-git.git'";
+        echo "Installing trizen from 'https://aur.archlinux.org/trizen-git.git'";
         
         git clone "https://aur.archlinux.org/trizen-git.git"
 
@@ -308,7 +241,7 @@ function choose_tasks {
             ;;
         2)
             #TODO: Install all dependencies...
-            install_dependencies "rofi wlsunset dunst grim slurp bc playerctl rofi-calc hyprlock brightnessctl python-requests python kitty wlogout dunst hyprpicker waybar pavucontrol cliphist spotify code chromium wireplumber librnnoise-nu rnnoise noise-suppression-for-voice nerd-fonts blueman protonup-qt-bin";
+            install_dependencies "rofi hypridle wlsunset dunst grim slurp bc playerctl rofi-calc hyprlock brightnessctl python-requests python kitty wlogout dunst hyprpicker waybar pavucontrol cliphist spotify code chromium wireplumber librnnoise-nu rnnoise noise-suppression-for-voice nerd-fonts blueman protonup-qt-bin";
             choose_tasks;
             ;;
         3)
@@ -321,7 +254,7 @@ function choose_tasks {
             ;;
         5)
             choose_aur_helper;
-            install_dependencies "rofi wlsunset dunst grim slurp bc playerctl rofi-calc hyprlock brightnessctl python-requests python kitty wlogout dunst hyprpicker waybar pavucontrol cliphist spotify code chromium wireplumber librnnoise-nu rnnoise noise-suppression-for-voice nerd-fonts blueman protonup-qt-bin";
+            install_dependencies "rofi hypridle wlsunset dunst grim slurp bc playerctl rofi-calc hyprlock brightnessctl python-requests python kitty wlogout dunst hyprpicker waybar pavucontrol cliphist spotify code chromium wireplumber librnnoise-nu rnnoise noise-suppression-for-voice nerd-fonts blueman protonup-qt-bin";
             choose_wm;
             choose_tasks;
             ;;
