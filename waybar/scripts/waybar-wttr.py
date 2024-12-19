@@ -52,13 +52,13 @@ WEATHER_CODES = {
     '386': '🌨️',
     '389': '🌨️',
     '392': '🌧️',
-    '395': '❄️ '
+    '395': '❄️'
 }
 
 data = {}
 
 
-weather = requests.get("https://wttr.in/?format=j1").json()
+weather = requests.get("https://wttr.in/Foz+do+Iguacu?format=j1").json()
 
 def format_time(time):
     return time.replace("00", "").zfill(2)
@@ -95,7 +95,8 @@ if tempint > 0 and tempint < 10:
 data['text'] = ''+WEATHER_CODES[weather['current_condition'][0]['weatherCode']] + \
     " "+extrachar+weather['current_condition'][0]['temp_C']+"°"
 
-data['tooltip'] = f"<b>{weather['current_condition'][0]['weatherDesc'][0]['value']} {weather['current_condition'][0]['temp_C']}°</b>\n"
+data['tooltip'] = f"<b>{weather['nearest_area'][0]['areaName'][0]['value']}</b>\n"
+data['tooltip'] += f"<b>{weather['current_condition'][0]['weatherDesc'][0]['value']} {weather['current_condition'][0]['temp_C']}°</b>\n"
 data['tooltip'] += f"Feels like: {weather['current_condition'][0]['FeelsLikeC']}°\n"
 data['tooltip'] += f"Wind: {weather['current_condition'][0]['windspeedKmph']}Km/h\n"
 data['tooltip'] += f"Humidity: {weather['current_condition'][0]['humidity']}%\n"

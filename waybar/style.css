@@ -20,7 +20,6 @@ tooltip {
     border-color: #11111b;
 }
 
-#custom-language,
 #custom-updates,
 #custom-caffeine,
 #custom-weather,
@@ -39,6 +38,8 @@ tooltip {
 #mpris,
 #cpu,
 #submap,
+#keyboard-state,
+#language,
 #backlight {
     background: #1e1e2e;
     padding: 0px 10px;
@@ -138,7 +139,7 @@ tooltip {
     margin-left: 10px;
 }
 
-#custom-language {
+#language {
     color: #f38ba8;
 }
 

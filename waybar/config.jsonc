@@ -20,6 +20,8 @@
         "clock",
         "network",
         "mpris",
+        "hyprland/language",
+        "keyboard-state",
         "custom/weather",
         "tray"
     ],
@@ -30,11 +32,24 @@
         "custom/drives",
         "battery",
         "backlight",
-        // "hyprland/language",
         "bluetooth",
         "pulseaudio",
         "pulseaudio#microphone"
     ],
+    "keyboard-state": {
+        "numlock": true,
+        "capslock": true,
+        "scrolllock": true,
+        "format": {
+            "numlock": "N {icon}",
+            "capslock": "C {icon}",
+            "scrolllock": "S {icon}"                                                                                                                                                       
+        },
+        "format-icons": {
+            "locked": "",
+            "unlocked": ""
+        }
+    },
     "hyprland/submap": {
         "format": "{}",
         "tooltip": false
@@ -48,8 +63,9 @@
         "return-type" : "json"
     },
     "hyprland/language": {
-        "format": "Lang: {}",
-        "keyboard-name": "at-translated-set-2-keyboard"
+        "format": " {short}",
+        "keyboard-name": "at-translated-set-2-keyboard",
+        "on-click": "hyprctl switchxkblayout at-translated-set-2-keyboard next"
     },
     "memory": {
         "interval": 2,
@@ -71,8 +87,8 @@
             "paused": "⏸",
             "playing": "▶",
             "stopped": "stopped"
-        }
-        ,
+        },
+        "player": "spotify", // Default Player
         "ignored-players": 
             ["firefox", "chromium", "plasma-browser-integration", "edge", "vlc"]
     },
@@ -89,7 +105,7 @@
         "on-click-right": "killall nm-connection-editor",
         "format": "{ifname} {bandwidthUpBytes}Up {bandwidthDownBytes}Down",
         "format-wifi": "{essid} <span font='10' rise='1pt'></span>  ({signalStrength}%)",
-        "format-ethernet": "<span font='10' rise='1pt'></span>  {bandwidthUpBytes:4}  <span font='10' rise='1pt'></span>  {bandwidthDownBytes:4}",
+        "format-ethernet": "<span font='10' rise='1pt'></span>  {bandwidthUpBytes:1}  <span font='10' rise='1pt'></span>  {bandwidthDownBytes:1}",
         "format-disconnected": "Disconnected ⚠",
         "tooltip-format": "{ifname} via {gwaddr} \n\n{bandwidthUpBytes}\tUp\n{bandwidthDownBytes}\tDown",
         "tooltip-format-wifi": "{essid} <span font='10' rise='1pt'></span>\n\nSignal:\t({signalStrength}%){signaldBm}dBm\nFrequency:\t{frequency}MHz\nInterface:\t{ifname}\nIP:\t{ipaddr}/{cidr}\nMask:\t{netmask}\nGateway:\t{gwaddr}\n\n{bandwidthUpBytes}\tUp\n{bandwidthDownBytes}\tDown",
@@ -123,7 +139,7 @@
     "custom/weather" : {
         "tooltip" : true,
         "format" : "{}",
-        "interval" : 1,
+        "interval" : 600,
         "exec" : "~/.config/waybar/scripts/waybar-wttr.py",
         "return-type" : "json"
     },
@@ -182,7 +198,7 @@
         "format-charging": " {capacity}%",
         "format-plugged": " {capacity}%",
         "format-alt": "{time} {icon}",
-        "format-icons": ["", "", "", "", "", "", "", "", "", "", ""]
+        "format-icons": ["", "", "", "", ""]
     },
     "pulseaudio": {
         "format": "<span font='10' rise='1pt'>{icon}</span> {volume}%",
@@ -195,12 +211,7 @@
         "on-scroll-down": "wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-",
         "scroll-step": 5,
         "format-icons": {
-            "headphones": "",
-            "handsfree": "",
-            "headset": "",
-            "phone": "",
-            "portable": "",
-            "car": "",
+            "headphones": "",
             "default": ["", "", ""]
         }
     },
