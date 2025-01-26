@@ -8,7 +8,7 @@ configuration {
   show-icons: true;
   icon-theme: "Nordzy";
 	//modi: "drun,run,calc,windowcd,window"; // Add Current Desktop(windowcd) to list
-	modi: "drun,filebrowser,run,window";
+	modi: "drun,calc,filebrowser,run,window";
 	lines: 15;
 	sidebar-mode: true;
   threads: 0;
