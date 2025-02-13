@@ -74,6 +74,7 @@
     },
     "mpris": {
         "interval": 1,
+        "title-len": 20,
         "format": "{player_icon}  {title}",
         "format-paused": "{player_icon} ({status_icon}) <i>{title}</i>",
         "format-stopped": "{player_icon}:{status_icon}",
