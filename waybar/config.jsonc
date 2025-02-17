@@ -158,7 +158,7 @@
     },
     "clock": {
         "interval" : 1,
-        "format": "{:%A <span font='10' rise='1pt'></span> %H:%M:%OS <span font='10' rise='1pt'></span> %d/%m/%y}",
+        "format": "{:%A <span font='10' rise='1pt'>󰥔</span> %H:%M:%OS <span font='10' rise='1pt'></span> %d/%m/%y}",
         "format-alt": "{:%A, %B %d, %Y (%R)} ",
         "tooltip-format": "<tt><small>{calendar}</small></tt>",
         "calendar": {

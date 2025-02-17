@@ -9,7 +9,7 @@ function configure_hyprland_wm {
     echo "Creating Backup folder"
     mkdir "backup"
 
-    for item_config in "rofi" "dunst" "hypr" "kitty" "pipewire" "waybar" "wlogout"
+    for item_config in "dunst" "hypr" "kitty" "pipewire" "rofi" "waybar" "wlogout"
     do
         moving_creating_configs ${item_config}
     done
@@ -48,8 +48,8 @@ function restore_configs_backup {
 
     for item_backup in $list_backups
     do
-        rm -rfv ~/.config/${item_backup};
-        mv -v backup/${item_backup} ~/.config;
+        rm -rfv ~/.config/"${item_backup}";
+        mv -v backup/"${item_backup}" ~/.config;
     done
 
     rm -r backup;
@@ -85,7 +85,7 @@ function choose_wm {
     echo " 1 - Hyprland WM";
     echo " 2 - Exit";
 
-    read chosen_wm;
+    read -r chosen_wm;
     echo "-------------------------"
 
     case $chosen_wm in
@@ -114,13 +114,12 @@ function choose_aur_helper {
     echo " 1 - trizen";
     echo " 2 - Exit";
 
-    read aur_helper;
+    read -r aur_helper;
     echo "-------------------------"
 
     case $aur_helper in
         1)
             install_trizen;
-            export INSTALLER_AUR_HELPER="trizen";
             ;;
         2)
             exit_script;
@@ -138,24 +137,31 @@ function choose_aur_helper {
     esac
 }
 
+function check_trizen_aur_helper {
+    if check_installed_package "trizen"
+    then
+        export INSTALLER_AUR_HELPER="trizen";
+    fi
+
+}
+
 function check_installed_package {
-    [[ -n $(pacman -Q $1) ]];
+    [[ -n $(pacman -Q "$1") ]];
 }
 
 function install_trizen {
-
-    if ! check_installed_package "git"
-    then
-        install_dependencies "git";
-    fi
-
     if ! check_installed_package "trizen"
     then
+        if ! check_installed_package "git"
+        then
+            install_dependencies "git";
+        fi
+
         echo "Installing trizen from 'https://aur.archlinux.org/trizen-git.git'";
         
         git clone "https://aur.archlinux.org/trizen-git.git"
 
-        cd trizen-git
+        cd trizen-git || exit
 
         makepkg -si
         
@@ -167,21 +173,29 @@ function install_trizen {
     else
         echo "Trizen installed";
     fi
+    
+    check_trizen_aur_helper;
 }
 
 function install_dependencies {
-    echo "";
-    echo "Checking selected packages: $1";
-    echo "";
+    check_trizen_aur_helper;
 
-    array=(`echo $1 | sed 's/ /\n/g'`)
+    if [[ ! $INSTALLER_AUR_HELPER ]]
+    then
+        choose_aur_helper;
+    fi
+
+    setup_packages_to_install;
+
+    IFS=" " read -r -a array <<< "$APP_TO_INSTALL";
 
     installed="";
     to_install="";
 
     for i in "${array[@]}";
     do
-        if ! check_installed_package $i
+        echo "----- Checking $i -----"
+        if ! check_installed_package "$i"
         then
             to_install+=" $i";
         else
@@ -189,22 +203,25 @@ function install_dependencies {
         fi
     done
 
-    echo "Installed packages: $installed";
+    echo "----- Installed packages: $installed";
 
     if [[ -n $to_install ]] 
     then
 
-        echo "Packages to install: $to_install";
+        echo "----- Packages to install: $to_install";
 
         if [[ $INSTALLER_AUR_HELPER ]]
         then
-            echo "AUR Help found, using $INSTALLER_AUR_HELPER!...";
+            echo "----- AUR Help found, using $INSTALLER_AUR_HELPER!...";
+            
             $INSTALLER_AUR_HELPER -Sq --noconfirm $to_install;
         else
-            echo "AUR Help nor found, using regular pacman command!!!...";
-            sudo pacman -Sq $to_install
+            echo "----- AUR Help not found, using regular pacman command!!!...";
+            sudo pacman -Sq "$to_install"
         fi
     fi
+    echo "";
+    echo "-----< System Ready to Run >-----";
     echo "";
 }
 
@@ -212,7 +229,8 @@ function unset_env_variables {
     echo "";
     echo "Removing env variables";
 
-    unset INSTALLER_AUR_HELPER
+    unset INSTALLER_AUR_HELPER;
+    unset APP_TO_INSTALL;
 }
 
 function exit_script {
@@ -231,7 +249,7 @@ function choose_tasks {
     echo " 5 - All tasks";
     echo " 6 - Exit";
 
-    read task;
+    read -r task;
     echo "-------------------------"
 
     case $task in
@@ -241,7 +259,7 @@ function choose_tasks {
             ;;
         2)
             #TODO: Install all dependencies...
-            install_dependencies "rofi hypridle wlsunset dunst grim slurp bc playerctl rofi-calc hyprlock brightnessctl python-requests python kitty wlogout dunst hyprpicker waybar pavucontrol cliphist spotify code chromium wireplumber librnnoise-nu rnnoise noise-suppression-for-voice nerd-fonts blueman protonup-qt-bin";
+            install_dependencies;
             choose_tasks;
             ;;
         3)
@@ -254,7 +272,7 @@ function choose_tasks {
             ;;
         5)
             choose_aur_helper;
-            install_dependencies "rofi hypridle wlsunset dunst grim slurp bc playerctl rofi-calc hyprlock brightnessctl python-requests python kitty wlogout dunst hyprpicker waybar pavucontrol cliphist spotify code chromium wireplumber librnnoise-nu rnnoise noise-suppression-for-voice nerd-fonts blueman protonup-qt-bin";
+            install_dependencies;
             choose_wm;
             choose_tasks;
             ;;
@@ -274,13 +292,126 @@ function choose_tasks {
     esac
 }
 
+function setup_packages_to_install {
+    hypland_packages=" hyprland hypridle hyprlock hyprpicker xdg-desktop-portal-hyprland hyprpaper hyprsunset"
+    hypland_packages+=" hyprpolkitagent hyprlang hyprutils hyprland-qt-support aquamarine hyprgraphics hyprland-qtutils";
+
+    rofi_packages=" rofi rofi-calc";
+
+    pipewire_packages=" pipewire pavucontrol wireplumber librnnoise-nu rnnoise noise-suppression-for-voice";
+
+    players_packages=" spotify playerctl wpctl";
+
+    theme_packages=" kvantum kvantum-qt5 kvantum-theme-materia";
+
+    fonts_packages=" ttf-font-awesome ttf-nerd-fonts-symbols ttf-nerd-fonts-symbols-common ttf-nerd-fonts-symbols-mono"; # TODO - Verify fonts to install
+    
+    bluetooth_packages=" blueberry blueman";
+
+    wayland_utilities_packages=" wlsunset wlogout waybar qt5-wayland qt6-wayland xwaylandvideobridge cliphist ranger";
+
+    utilities_packages=" network-manager-applet grim slurp dunst bc brightnessctl python-requests python kitty qalculate-gtk";
+
+    game_utilities_packages=" steam protonup-qt-bin heroic-games-launcher-bin vkd3d lib32-vkd3d wine wine-mono winetricks";
+
+    amd_game_utilities_packages=" amd-ucode amf-headers composable-kernel hip-runtime-amd amd-vulkan-prefixes";
+    amd_game_utilities_packages+=" vulkan-radeon lib32-vulkan-radeon ";
+
+    browser_packages=" chromium";
+
+    dev_packages=" code git";
+
+    apps_install="$hypland_packages";
+    apps_install+="$rofi_packages";
+    apps_install+="$pipewire_packages";
+    apps_install+="$players_packages";
+    apps_install+="$theme_packages";
+    apps_install+="$fonts_packages";
+    apps_install+="$bluetooth_packages";
+    apps_install+="$wayland_utilities_packages";
+    apps_install+="$utilities_packages";
+    apps_install+="$browser_packages";
+
+    echo "-------------------------"
+    echo "Install game utilities?";
+    echo " 1 - Yes";
+    echo " 0 - No";
+    
+    read -r read_game;
+
+    case $read_game in
+        1)
+            apps_install+="$game_utilities_packages";
+            ;;
+    esac
+    echo "-------------------------"
+
+    echo "-------------------------"
+    echo "Install AMD game utilities?";
+    echo " 1 - Yes";
+    echo " 0 - No";
+    
+    read -r read_amd;
+
+    case $read_amd in
+        1)
+            apps_install+="$amd_game_utilities_packages";
+            ;;
+    esac
+    echo "-------------------------"
+    
+    echo "-------------------------"
+    echo "Install development utilities?";
+    echo " 1 - Yes";
+    echo " 0 - No";
+    
+    read -r read_dev;
+
+    case $read_dev in
+        1)
+            apps_install+="$dev_packages";
+            ;;
+    esac
+    echo "-------------------------"
+    
+    echo "-------------------------"
+    echo "Install Logitech Solaar utilitie?";
+    echo " 1 - Yes";
+    echo " 0 - No";
+    
+    read -r read_logitech;
+
+    case $read_logitech in
+        1)
+            apps_install+=" solaar";
+            ;;
+    esac
+    echo "-------------------------"
+    
+    echo "-------------------------"
+    echo "Install Corsair Mouse/Keyboard utilitie?";
+    echo " 1 - Yes";
+    echo " 0 - No";
+    
+    read -r read_corsair;
+
+    case $read_corsair in
+        1)
+            apps_install+=" ckb-next";
+            ;;
+    esac
+    echo "-------------------------"
+
+    export APP_TO_INSTALL=$apps_install;
+}
+
 function init_config_installer {
     choose_tasks;
 
     unset_env_variables;
 
     echo "";
-    echo "----- Ending config script -----"
+    echo "----- Ending config script -----";
 }
 
 init_config_installer;
