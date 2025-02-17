@@ -300,7 +300,7 @@ function setup_packages_to_install {
 
     pipewire_packages=" pipewire pavucontrol wireplumber librnnoise-nu rnnoise noise-suppression-for-voice";
 
-    players_packages=" spotify playerctl wpctl";
+    players_packages=" spotify playerctl";
 
     theme_packages=" kvantum kvantum-qt5 kvantum-theme-materia";
 
