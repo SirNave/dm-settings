@@ -9,7 +9,7 @@ function configure_hyprland_wm {
     echo "Creating Backup folder"
     mkdir "backup"
 
-    for item_config in "dunst" "hypr" "kitty" "pipewire" "rofi" "waybar" "wlogout"
+    for item_config in "dunst" "hypr" "kitty" "pipewire" "rofi" "waybar" "wlogout" "mimeapps.list"
     do
         moving_creating_configs ${item_config}
     done
@@ -304,13 +304,13 @@ function setup_packages_to_install {
 
     theme_packages=" kvantum kvantum-qt5 kvantum-theme-materia";
 
-    fonts_packages=" ttf-font-awesome ttf-nerd-fonts-symbols ttf-nerd-fonts-symbols-common ttf-nerd-fonts-symbols-mono"; # TODO - Verify fonts to install
+    fonts_packages=" ttf-font-awesome ttf-nerd-fonts-symbols ttf-nerd-fonts-symbols-common ttf-nerd-fonts-symbols-mono ttf-dejavu noto-fonts noto-fonts-emoji ttf-liberation"; # TODO - Verify fonts to install
     
     bluetooth_packages=" blueberry blueman";
 
     wayland_utilities_packages=" wlsunset wlogout waybar qt5-wayland qt6-wayland xwaylandvideobridge cliphist ranger";
 
-    utilities_packages=" network-manager-applet grim slurp dunst bc brightnessctl python-requests python kitty qalculate-gtk";
+    utilities_packages=" network-manager-applet grim slurp dunst bc brightnessctl python-requests python kitty qalculate-gtk viewnior";
 
     game_utilities_packages=" steam protonup-qt-bin heroic-games-launcher-bin vkd3d lib32-vkd3d wine wine-mono winetricks";
 
