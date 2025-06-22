@@ -6,12 +6,21 @@ function configure_hyprland_wm {
     echo "";
     echo "Starting Hyprland configs!";
 
+    backup_path="backup";
+
     echo "Creating Backup folder"
-    mkdir "backup"
+    if [[ -e $backup_path ]]
+    then
+        echo "-->Backup Exist, create by date<--"
+        backup_path+="_$(date +"%Y-%m-%d_%H-%M-%S")";
+    fi
+
+    echo "-->Creating backup path - ${backup_path}<--"
+    mkdir "${backup_path}"
 
     for item_config in "dunst" "hypr" "kitty" "pipewire" "rofi" "waybar" "wlogout" "mimeapps.list"
     do
-        moving_creating_configs ${item_config}
+        moving_creating_configs "${item_config}" "${backup_path}"
     done
 
     echo "End config script"
@@ -22,7 +31,7 @@ function moving_creating_configs  {
     user_home=~
     user_config_path="${user_home}/.config"
     config_repo=${PWD}
-    config_backup="${config_repo}/backup"
+    config_backup="${config_repo}/$2"
     config_repo_local=${config_repo}/$1
     user_config_local=${user_config_path}/$1
 
@@ -32,10 +41,41 @@ function moving_creating_configs  {
     else
         repo_name="$1";
     fi
+    
+    move_to_backup=true;
 
     echo "-------------------------------------------------"
-    echo "-->Moving ${repo_name} files from ${user_config_local} to backup<--"
-    mv -v "${user_config_local}" "${config_backup}"
+    echo "-->Check ${user_config_local}<--"
+    if [[ -e $user_config_local ]]
+    then
+        echo "--->File exists<---"
+        echo "--->Test ${user_config_local} to SisLink<---"
+        if [[ -L $user_config_local ]]
+        then
+            echo "---->SisLink<----"
+            read_sislink=$(readlink "$user_config_local")
+            echo "---->${read_sislink}<----"
+            if [[ "$read_sislink" == "$config_repo_local" ]]
+            then
+                echo "----->Same repository of backup<-----"
+                move_to_backup=false;
+            else
+                echo "----->Different repository<-----"
+            fi
+        else
+            echo "---->False<----"
+        fi
+    else
+        echo "--->Missing file<--"
+        move_to_backup=false;
+    fi
+
+    if [[ "$move_to_backup" == "true" ]];
+    then
+        echo "-->Moving ${repo_name} files from ${user_config_local} to backup<--"
+        mv -v "${user_config_local}" "${config_backup}"
+    fi
+
     echo "--->Creating SisLink to ${repo_name} files of ${user_config_path}<---"
     ln -sv "${config_repo_local}" "${user_config_path}"
 }
@@ -56,8 +96,7 @@ function restore_configs_backup {
 }
 
 function choose_wm {
-    echo "";
-    # Greetings!
+    echo ""
     echo "
 ###################################################################################################
 |                                                                                                 |
@@ -75,7 +114,7 @@ function choose_wm {
     then
         echo "Moving on...";
     else
-        exit_script;
+        return;
     fi
 
     # End of Greetings
