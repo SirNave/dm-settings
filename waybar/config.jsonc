@@ -33,8 +33,10 @@
         "battery",
         "backlight",
         "bluetooth",
-        "pulseaudio",
-        "pulseaudio#microphone"
+        // "pulseaudio",
+        // "pulseaudio#microphone",
+        "wireplumber#sink",
+        "wireplumber#source"
     ],
     "keyboard-state": {
         "numlock": true,
@@ -159,7 +161,6 @@
     "clock": {
         "interval" : 1,
         "format": "{:%A <span font='10' rise='1pt'>󰥔</span> %H:%M:%OS <span font='10' rise='1pt'></span> %d/%m/%y}",
-        "format-alt": "{:%A, %B %d, %Y (%R)} ",
         "tooltip-format": "<tt><small>{calendar}</small></tt>",
         "calendar": {
             "mode"          : "month",
@@ -219,7 +220,33 @@
     "pulseaudio#microphone": {
         "format": "{format_source}",
         "format-source": "<span font='10' rise='1pt'></span> {volume}%",
-        "format-source-muted": "<span font='10' rise='1pt'></span> Muted",
+        "format-source-muted": "<span font='10' rise='1pt'></span> Muted",
+        "on-click": "wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle",
+        "on-click-middle": "pavucontrol -t 4",
+        "on-click-right": "killall pavucontrol",
+        "on-scroll-up": "wpctl set-volume @DEFAULT_AUDIO_SOURCE@ 5%+",
+        "on-scroll-down": "wpctl set-volume @DEFAULT_AUDIO_SOURCE@ 5%-",
+        "scroll-step": 5
+    },
+    "wireplumber#sink": {
+        "format": "{icon} {volume}%",
+        "format-muted": "",
+        "on-click": "wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle",
+        "on-click-middle": "pavucontrol -t 3",
+        "on-click-right": "killall pavucontrol",
+        "on-scroll-up": "wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%+",
+        "on-scroll-down": "wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-",
+        "format-icons": {
+            "headphones": "",
+            "default": ["", "", ""]
+        },
+        "scroll-step": 5,
+        "states": { "p0":0, "p5":5, "p10":10, "p15":15, "p20":20, "p25":25, "p30":30, "p35":35, "p40":40, "p45":45, "p50":50, "p55":55, "p60":60, "p65":65, "p70":70, "p75":75, "p80":80, "p85":85, "p90":90, "p95":95, "p100":100 }
+    },
+    "wireplumber#source": {
+        "node-type": "Audio/Source",
+        "format": " {volume}%",
+        "format-muted": " ",
         "on-click": "wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle",
         "on-click-middle": "pavucontrol -t 4",
         "on-click-right": "killall pavucontrol",

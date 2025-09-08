@@ -38,5 +38,5 @@ x-scheme-handler/http=microsoft-edge-dev.desktop;chromium.desktop;
 x-scheme-handler/https=microsoft-edge-dev.desktop;chromium.desktop;
 x-scheme-handler/jetbrains=jetbrains-toolbox.desktop
 x-scheme-handler/mailto=microsoft-edge-dev.desktop;chromium.desktop;
-x-scheme-handler/msteams=teams.desktop;chromium.desktop;
+x-scheme-handler/msteams=teams-for-linux.desktop;microsoft-edge-dev.desktop;chromium.desktop;
 x-scheme-handler/jetbrains=jetbrains-toolbox.desktop;
