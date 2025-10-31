@@ -1,12 +1,13 @@
 {
+    "reload_style_on_change": true,
     "layer": "top",
     "position": "top",
     "mode": "dock",
     "fixed-center": true,
     "exclusive": true,
-    "passthrough": false,
+    // "passthrough": false,
     "gtk-layer-shell": true,
-    "ipc": true,
+    // "ipc": true,
     "spacing": 0,
     "height": 0,
     "margin-left": 5,
@@ -18,11 +19,12 @@
     ],
     "modules-center": [
         "clock",
+        "custom/weather",
         "network",
-        "mpris",
+        "group/mpris",
         "hyprland/language",
         "keyboard-state",
-        "custom/weather",
+        "custom/updates",
         "tray"
     ],
     "modules-right": [
@@ -33,11 +35,44 @@
         "battery",
         "backlight",
         "bluetooth",
-        // "pulseaudio",
-        // "pulseaudio#microphone",
         "wireplumber#sink",
-        "wireplumber#source"
+        "wireplumber#source",
+        "group/group-power"
     ],
+    "group/group-power": {
+        "orientation": "inherit",
+        "drawer": {
+            "transition-duration": 500,
+            "children-class": "not-power",
+            "transition-left-to-right": true,
+            "click-to-reveal": false
+        },
+        "modules": [
+            "custom/expand-icon",
+            "custom/lock",
+            "custom/reboot",
+            "custom/power"
+        ]
+    },
+    "custom/expand-icon": {
+        "format": "",
+        "tooltip": false
+    },
+    "custom/lock": {
+        "format": "󰍁",
+        "tooltip": false,
+        "on-click": "hyprlock"
+    },
+    "custom/reboot": {
+        "format": "󰜉",
+        "tooltip": false,
+        "on-click": "reboot"
+    },
+    "custom/power": {
+        "format": "",
+        "tooltip": false,
+        "on-click": "shutdown now"
+    },
     "keyboard-state": {
         "numlock": true,
         "capslock": true,
@@ -74,12 +109,46 @@
         "format": "{used:0.1f}G/{total:0.1f}G",
         "tooltip-format": "Used: {used:0.1f}G {percentage}%\nAvailable: {avail:0.1f}G\nTotal: {total:0.1f}G\nSWAP Used: {swapUsed:0.1f}G {swapPercentage}%\nSWAP Available: {swapAvail:0.1f}G\nSWAP Total: {swapTotal:0.1f}G"
     },
-    "mpris": {
+    "group/mpris": {
+        "orientation": "inherit",
+        "drawer": {
+            "transition-duration": 500,
+            "children-class": "not-power",
+            "transition-left-to-right": true,
+            "click-to-reveal": false
+        },
+        "modules": [
+            "mpris#colapsed",
+            "mpris#expanded"
+        ]
+    },
+    "mpris#colapsed": {
         "interval": 1,
-        "title-len": 20,
-        "format": "{player_icon}  {title}",
-        "format-paused": "{player_icon} ({status_icon}) <i>{title}</i>",
+        "tooltip": false,
+        "format": "{player_icon}",
+        "format-paused": "{player_icon} ({status_icon})",
         "format-stopped": "{player_icon}:{status_icon}",
+        "player-icons": {
+            "default": "▶",
+            "mpv": "🎵",
+            "spotify": "<span font='10' rise='0pt'></span>"
+        },
+        "status-icons": {
+            "paused": "⏸",
+            "playing": "▶",
+            "stopped": "stopped"
+        },
+        "player": "spotify", // Default Player
+        
+        "ignored-players": 
+            ["firefox", "chromium", "plasma-browser-integration", "edge", "vlc"]
+    },
+    "mpris#expanded": {
+        "interval": 1,
+        "title-len": 30,
+        "format": "{title}",
+        "format-paused": "<i>{title}</i>",
+        "format-stopped": ":{status_icon}",
         "tooltip-format": "{player} ({status}) {title} {artist} {album} {length} {position}",
         "player-icons": {
             "default": "▶",
@@ -113,7 +182,8 @@
         "tooltip-format": "{ifname} via {gwaddr} \n\n{bandwidthUpBytes}\tUp\n{bandwidthDownBytes}\tDown",
         "tooltip-format-wifi": "{essid} <span font='10' rise='1pt'></span>\n\nSignal:\t({signalStrength}%){signaldBm}dBm\nFrequency:\t{frequency}MHz\nInterface:\t{ifname}\nIP:\t{ipaddr}/{cidr}\nMask:\t{netmask}\nGateway:\t{gwaddr}\n\n{bandwidthUpBytes}\tUp\n{bandwidthDownBytes}\tDown",
         "tooltip-format-ethernet": "Interface:\t{ifname}\nIP:\t{ipaddr}/{cidr}\nMask:\t{netmask}\nGateway:\t{gwaddr}\n\n{bandwidthUpBytes}\tUp\n{bandwidthDownBytes}\tDown",
-        "tooltip-format-disconnected": "Disconnected ⚠"
+        "tooltip-format-disconnected": "Disconnected ⚠",
+        "max-length": 25,
     },
     "hyprland/window": {
         "format": "{}",
@@ -137,7 +207,8 @@
     "custom/updates": {
         "exec": "(pacman -Qu ; trizen -Qua) | wc -l",
         "interval": 7200,
-        "format": " {}"
+        "tooltip": false,
+        "format": " {}"
     },
     "custom/weather" : {
         "tooltip" : true,
@@ -200,37 +271,13 @@
         "format-charging": " {capacity}%",
         "format-plugged": " {capacity}%",
         "format-alt": "{time} {icon}",
-        "format-icons": ["", "", "", "", ""]
-    },
-    "pulseaudio": {
-        "format": "<span font='10' rise='1pt'>{icon}</span> {volume}%",
-        "format-muted": "<span font='10' rise='1pt'></span> Muted",
+        "format-icons": ["", "", "", "", ""],
         "tooltip": true,
-        "on-click": "wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle",
-        "on-click-middle": "pavucontrol -t 3",
-        "on-click-right": "killall pavucontrol",
-        "on-scroll-up": "wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%+",
-        "on-scroll-down": "wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-",
-        "scroll-step": 5,
-        "format-icons": {
-            "headphones": "",
-            "default": ["", "", ""]
-        }
-    },
-    "pulseaudio#microphone": {
-        "format": "{format_source}",
-        "format-source": "<span font='10' rise='1pt'></span> {volume}%",
-        "format-source-muted": "<span font='10' rise='1pt'></span> Muted",
-        "on-click": "wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle",
-        "on-click-middle": "pavucontrol -t 4",
-        "on-click-right": "killall pavucontrol",
-        "on-scroll-up": "wpctl set-volume @DEFAULT_AUDIO_SOURCE@ 5%+",
-        "on-scroll-down": "wpctl set-volume @DEFAULT_AUDIO_SOURCE@ 5%-",
-        "scroll-step": 5
+        "tooltip-format": "Capacity: {capacity}\nPower: {power}\nTime To: {timeTo}\nTime: {time}\nCycles: {cycles}\nHealth: {health}"
     },
     "wireplumber#sink": {
         "format": "{icon} {volume}%",
-        "format-muted": "",
+        "format-muted": "",
         "on-click": "wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle",
         "on-click-middle": "pavucontrol -t 3",
         "on-click-right": "killall pavucontrol",

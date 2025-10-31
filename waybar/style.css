@@ -14,7 +14,6 @@ window#waybar {
 
 tooltip {
     background: #1e1e2e;
-    border-radius: 10px;
     border-width: 2px;
     border-style: solid;
     border-color: #11111b;
@@ -29,19 +28,24 @@ tooltip {
 #temperature,
 #clock,
 #battery,
-#pulseaudio,
 #wireplumber,
 #bluetooth,
 #network,
 #memory,
 #workspaces,
 #tray,
-#mpris,
+#mpris.colapsed,
+#mpris.expanded,
 #cpu,
 #submap,
 #keyboard-state,
 #language,
-#backlight {
+#custom-expand-icon,
+#backlight,
+#custom-lock,
+#custom-power,
+#custom-reboot
+{
     background: #1e1e2e;
     padding: 0px 10px;
     margin: 3px 0px;
@@ -49,14 +53,82 @@ tooltip {
     border: 1px solid #181825;
 }
 
-#tray {
-    border-radius: 10px;
-    margin-right: 3px;
+/* Border left */
+tooltip,
+#clock,
+#window,
+#submap,
+#workspaces,
+#wireplumber.sink,
+#memory,
+#custom-caffeine,
+#workspaces button.active,
+#workspaces button.focused,
+#workspaces button.visible,
+#workspaces button.urgent,
+#workspaces button.visible,
+#workspaces button.hidden,
+#workspaces button:hover,
+#custom-lock,
+#custom-power,
+#custom-reboot,
+#custom-expand-icon
+{
+    border-top-left-radius: 7px;
+    border-bottom-left-radius: 7px;
+}
+
+/* Border right */
+tooltip,
+#tray,
+#window,
+#submap,
+#workspaces,
+#wireplumber.source,
+#bluetooth,
+#workspaces button.active,
+#workspaces button.focused,
+#workspaces button.visible,
+#workspaces button.urgent,
+#workspaces button.visible,
+#workspaces button.hidden,
+#workspaces button:hover,
+#custom-lock,
+#custom-power,
+#custom-reboot,
+#custom-expand-icon
+{
+    border-top-right-radius: 7px;
+    border-bottom-right-radius: 7px;
+}
+
+#mpris.colapsed,
+#mpris.expanded 
+{
+    border: 0px;
+}
+
+#custom-lock,
+#custom-power,
+#custom-reboot,
+#custom-expand-icon {
     margin-left: 3px;
+    margin-right: 3px;
+}
+
+#custom-lock {
+    color: #00ff00;
+}
+
+#custom-power {
+    color: #ff0000;
+}
+
+#custom-reboot {
+    color: #ffa500;
 }
 
 #window, #submap {
-    border-radius: 10px;
     margin-left: 3px;
     margin-right: 3px;
 }
@@ -70,7 +142,6 @@ tooltip {
 
 #workspaces {
     background: #1e1e2e;
-    border-radius: 5px;
     padding-left: 0px;
     padding-right: 0px;
     margin-left: 0px;
@@ -78,65 +149,50 @@ tooltip {
 }
 
 #workspaces button {
-    padding: 5px;
+    padding: 6px;
     color: #4953ff;
-    margin-right: 5px;
+    margin-right: 1px;
+    margin-left: 1px;
 }
 
 #workspaces button.active  {
     color: #eeff00;
     background: #313244;
-    border-radius: 5px;
 }
 
 #workspaces button.focused {
     color: #cdd6f4;
     background: #313244;
-    border-radius: 5px;
 }
 
 #workspaces button.visible {
     color: #a6adc8;
     background: #00d9ff;
-    border-radius: 5px;
 }
 
 
 #workspaces button.urgent {
     color: #cdd6f4;
     background: #ff002b;
-    border-radius: 5px;
 }
 
 #workspaces button.visible {
     color: #11111b;
     background: #00ff55;
-    border-radius: 5px;
 }
 
 #workspaces button.hidden {
     color: #11111b;
     background: #ffd900;
-    border-radius: 5px;
 }
 
 #workspaces button:hover {
     color: #eeff00;
     background: #11111b;
-    border-radius: 5px;
-}
-
-#memory {
-    border-radius: 10px 0px 0px 10px;
-}
-
-#bluetooth {
-    border-radius: 0 10px 10px 0;
 }
 
 #custom-caffeine {
     color: #89dceb;
-    border-radius: 10px 0px 0px 10px;
     margin-left: 10px;
 }
 
@@ -146,12 +202,10 @@ tooltip {
 
 #custom-updates {
     color: #f5c2e7;
-    border-radius: 10px 0px 0px 10px;
 }
 
 #clock {
     color: #fab387;
-    border-radius: 10px 0px 0px 10px;
     margin-right: 0px;
 }
 
@@ -159,29 +213,22 @@ tooltip {
     color: #f9e2af;
 }
 
-#pulseaudio, #wireplumber {
+#wireplumber {
     color: #89b4fa;
     margin-left: 3px;
     border-left: 0px;
     border-right: 0px;
-    border-radius: 10px 0px 0px 10px;
 }
 
-#pulseaudio.microphone, #wireplumber.source {
+#wireplumber.source {
     color: #cba6f7;
     border-left: 0px;
     margin-left: 0px;
     border-right: 0px;
-    border-radius: 0 10px 10px 0;
 }
 
 #battery {
     color: #a6e3a1;
-}
-
-#custom-weather {
-    border-radius: 0px 10px 10px 0px;
-    margin-left: 0px;
 }
 
 #wireplumber.muted {
