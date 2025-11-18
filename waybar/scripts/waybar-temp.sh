@@ -49,7 +49,7 @@ done
 
 if [[ $main_text ]];
 then
-    main_text=" $main_text°C"
+    main_text="<span font='Material Icons 12' rise='-3pt'>device_thermostat</span> $main_text°C"
 else
     main_text="Error"
 fi

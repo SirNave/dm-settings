@@ -55,21 +55,21 @@
         ]
     },
     "custom/expand-icon": {
-        "format": "",
+        "format": "<span font='Material Icons 12' rise='-3pt'>more</span>",
         "tooltip": false
     },
     "custom/lock": {
-        "format": "󰍁",
+        "format": "<span font='Material Icons 12' rise='-3pt'>lock</span>",
         "tooltip": false,
         "on-click": "hyprlock"
     },
     "custom/reboot": {
-        "format": "󰜉",
+        "format": "<span font='Material Icons 12' rise='-3pt'>restart_alt</span>",
         "tooltip": false,
         "on-click": "reboot"
     },
     "custom/power": {
-        "format": "",
+        "format": "<span font='Material Icons 12' rise='-3pt'>power</span>",
         "tooltip": false,
         "on-click": "shutdown now"
     },
@@ -78,12 +78,12 @@
         "capslock": true,
         "scrolllock": true,
         "format": {
-            "numlock": "N{icon}",
-            "capslock": "C{icon}",
-            "scrolllock": "S{icon}"
+            "numlock": "N<span font='Material Icons 12' rise='-3pt'>{icon}</span>",
+            "capslock": "C<span font='Material Icons 12' rise='-3pt'>{icon}</span>",
+            "scrolllock": "S<span font='Material Icons 12' rise='-3pt'>{icon}</span>"
         },
         "format-icons": {
-            "locked": " ",
+            "locked": "lock",
             "unlocked": ""
         }
     },
@@ -100,7 +100,7 @@
         "return-type" : "json"
     },
     "hyprland/language": {
-        "format": " {short}",
+        "format": "<span font='Material Icons 12' rise='-3pt'>keyboard</span>{short}",
         "keyboard-name": "at-translated-set-2-keyboard",
         "on-click": "hyprctl switchxkblayout at-translated-set-2-keyboard next"
     },
@@ -125,7 +125,7 @@
     "mpris#colapsed": {
         "interval": 1,
         "tooltip": false,
-        "format": "{player_icon}",
+        "format": "{player_icon} ",
         "format-paused": "{player_icon} ({status_icon})",
         "format-stopped": "{player_icon}:{status_icon}",
         "player-icons": {
@@ -149,7 +149,7 @@
         "format": "{title}",
         "format-paused": "<i>{title}</i>",
         "format-stopped": ":{status_icon}",
-        "tooltip-format": "{player} ({status}) {title} {artist} {album} {length} {position}",
+        "tooltip-format": "{player} ({status})\n\nTitle: {title}\nArtist: {artist}\nAlbum: {album}\n\nLength: {length}\nPosition: {position}",
         "player-icons": {
             "default": "▶",
             "mpv": "🎵",
@@ -176,14 +176,14 @@
         "on-click": "nm-connection-editor",
         "on-click-right": "killall nm-connection-editor",
         "format": "{ifname} {bandwidthUpBytes}Up {bandwidthDownBytes}Down",
-        "format-wifi": "{essid} <span font='10' rise='1pt'></span>  ({signalStrength}%)",
-        "format-ethernet": "<span font='10' rise='1pt'></span>  {bandwidthUpBytes:1}  <span font='10' rise='1pt'></span>  {bandwidthDownBytes:1}",
-        "format-disconnected": "Disconnected ⚠",
-        "tooltip-format": "{ifname} via {gwaddr} \n\n{bandwidthUpBytes}\tUp\n{bandwidthDownBytes}\tDown",
-        "tooltip-format-wifi": "{essid} <span font='10' rise='1pt'></span>\n\nSignal:\t({signalStrength}%){signaldBm}dBm\nFrequency:\t{frequency}MHz\nInterface:\t{ifname}\nIP:\t{ipaddr}/{cidr}\nMask:\t{netmask}\nGateway:\t{gwaddr}\n\n{bandwidthUpBytes}\tUp\n{bandwidthDownBytes}\tDown",
+        "format-wifi": "{essid} <span font='Material Icons 12' rise='-3pt'>wifi</span> ({signalStrength}%)",
+        "format-ethernet": "<span font='Material Icons 12' rise='-3pt'>cloud_upload</span> {bandwidthUpBytes:1}   <span font='Material Icons 12' rise='-3pt'>cloud_download</span> {bandwidthDownBytes:1}",
+        "format-disconnected": "Disconnected <span font='Material Icons 12' rise='-3pt'>warning</span>",
+        "tooltip-format": "{ifname} via {gwaddr}\n\n{bandwidthUpBytes}\tUp\n{bandwidthDownBytes}\tDown",
+        "tooltip-format-wifi": "{essid} <span font='Material Icons 12' rise='-3pt'>wifi</span>\n\nSignal:\t({signalStrength}%){signaldBm}dBm\nFrequency:\t{frequency}MHz\nInterface:\t{ifname}\nIP:\t{ipaddr}/{cidr}\nMask:\t{netmask}\nGateway:\t{gwaddr}\n\n{bandwidthUpBytes}\tUp\n{bandwidthDownBytes}\tDown",
         "tooltip-format-ethernet": "Interface:\t{ifname}\nIP:\t{ipaddr}/{cidr}\nMask:\t{netmask}\nGateway:\t{gwaddr}\n\n{bandwidthUpBytes}\tUp\n{bandwidthDownBytes}\tDown",
-        "tooltip-format-disconnected": "Disconnected ⚠",
-        "max-length": 25,
+        "tooltip-format-disconnected": "Disconnected <span font='Material Icons 12' rise='-3pt'>warning</span>",
+        "max-length": 30
     },
     "hyprland/window": {
         "format": "{}",
@@ -208,7 +208,7 @@
         "exec": "(pacman -Qu ; trizen -Qua) | wc -l",
         "interval": 7200,
         "tooltip": false,
-        "format": " {}"
+        "format": "<span font='Material Icons 12' rise='-3pt'>update</span>{}"
     },
     "custom/weather" : {
         "tooltip" : true,
@@ -231,7 +231,7 @@
     },
     "clock": {
         "interval" : 1,
-        "format": "{:%A <span font='10' rise='1pt'>󰥔</span> %H:%M:%OS <span font='10' rise='1pt'></span> %d/%m/%y}",
+        "format": "{:%A <span font='Material Icons 12' rise='-3pt'>alarm</span>%H:%M:%OS <span font='Material Icons 12' rise='-3pt'>calendar_month</span>%d/%m/%y}",
         "tooltip-format": "<tt><small>{calendar}</small></tt>",
         "calendar": {
             "mode"          : "month",
@@ -255,8 +255,8 @@
     },
     "backlight": {
         "device": "intel_backlight",
-        "format": "{icon} {percent}%",
-        "format-icons": ["", ""],
+        "format": "<span font='Material Icons 12' rise='-3pt'>{icon}</span> {percent}%",
+        "format-icons": ["visibility_off", "brightness_3", "brightness_2", "brightness_4", "brightness_6", "brightness_5", "brightness_7"],
         "on-scroll-up": "brightnessctl set 1%+",
         "on-scroll-down": "brightnessctl set 1%-",
         "min-length": 6
@@ -267,49 +267,53 @@
             "warning": 30,
             "critical": 20
         },
-        "format": "{icon} {capacity}%",
-        "format-charging": " {capacity}%",
-        "format-plugged": " {capacity}%",
+        "format": "<span font='Material Icons 12' rise='-3pt'>{icon}</span>{capacity}%",
+        "format-charging": "<span font='Material Icons 12' rise='-3pt'>bolt</span>{capacity}%",
+        "format-plugged": "<span font='Material Icons 12' rise='-3pt'>power</span>{capacity}%",
         "format-alt": "{time} {icon}",
-        "format-icons": ["", "", "", "", ""],
+        "format-icons": ["battery_0_bar", "battery_1_bar", "battery_2_bar", "battery_3_bar", "battery_4_bar", "battery_5_bar", "battery_6_bar", "battery_charging_full"],
         "tooltip": true,
         "tooltip-format": "Capacity: {capacity}\nPower: {power}\nTime To: {timeTo}\nTime: {time}\nCycles: {cycles}\nHealth: {health}"
     },
     "wireplumber#sink": {
-        "format": "{icon} {volume}%",
-        "format-muted": "",
+        "format": "<span font='Material Icons 12' rise='-3pt'>{icon}</span> {volume}%",
+        "format-muted": "<span font='Material Icons 12' rise='-3pt'>volume_off</span>",
         "on-click": "wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle",
         "on-click-middle": "pavucontrol -t 3",
         "on-click-right": "killall pavucontrol",
         "on-scroll-up": "wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%+",
         "on-scroll-down": "wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-",
         "format-icons": {
-            "headphones": "",
-            "default": ["", "", ""]
+            "headphones": "headphones",
+            "default": ["volume_off", "volume_mute", "volume_down", "volume_up"]
         },
         "scroll-step": 5,
         "states": { "p0":0, "p5":5, "p10":10, "p15":15, "p20":20, "p25":25, "p30":30, "p35":35, "p40":40, "p45":45, "p50":50, "p55":55, "p60":60, "p65":65, "p70":70, "p75":75, "p80":80, "p85":85, "p90":90, "p95":95, "p100":100 }
     },
     "wireplumber#source": {
         "node-type": "Audio/Source",
-        "format": " {volume}%",
-        "format-muted": " ",
+        "format": "<span font='Material Icons 12' rise='-3pt'>{icon}</span> {volume}%",
+        "format-muted": "<span font='Material Icons 12' rise='-3pt'>mic_off</span>",
         "on-click": "wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle",
         "on-click-middle": "pavucontrol -t 4",
         "on-click-right": "killall pavucontrol",
         "on-scroll-up": "wpctl set-volume @DEFAULT_AUDIO_SOURCE@ 5%+",
         "on-scroll-down": "wpctl set-volume @DEFAULT_AUDIO_SOURCE@ 5%-",
+        "format-icons": {
+            "headphones": "headset_mic",
+            "default": ["mic"]
+        },
         "scroll-step": 5
     },
     "bluetooth": {
         // "controller": "controller1", // specify the alias of the controller if there are more than 1 on the system
         "on-click": "blueman-manager",
         "on-click-right": "killall blueman-manager",
-        "format": " {status}",
+        "format": "<span font='Material Icons 12' rise='-3pt'>bluetooth</span>{status}",
         // "format-disabled": " disabled", // an empty format will hide the module
         // "format-off": " off", // an empty format will hide the module
         // "format-on": " on", // an empty format will hide the module
-        "format-connected": " {num_connections}",
+        "format-connected": "<span font='Material Icons 12' rise='-3pt'>bluetooth_connected</span>{num_connections}",
         // "format-connected": " {device_alias}",
         //"format-connected-battery": " {device_alias} {device_battery_percentage}%", // Show device connected with battery info
         //"format-device-preference": [ "device1", "device2" ], // preference list deciding the displayed device
