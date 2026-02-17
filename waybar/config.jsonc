@@ -138,10 +138,9 @@
             "playing": "play",
             "stopped": "stopped"
         },
-        "player": "spotify", // Default Player
         
         "ignored-players": 
-            ["firefox", "chromium", "plasma-browser-integration", "edge", "vlc"]
+            ["firefox", "plasma-browser-integration", "edge", "vlc"]
     },
     "mpris#expanded": {
         "interval": 1,
@@ -160,9 +159,8 @@
             "playing": "▶",
             "stopped": "stopped"
         },
-        "player": "spotify", // Default Player
         "ignored-players": 
-            ["firefox", "chromium", "plasma-browser-integration", "edge", "vlc"]
+            ["firefox", "plasma-browser-integration", "edge", "vlc"]
     },
     "cpu": {
         "interval": 1,

@@ -358,7 +358,7 @@ function setup_packages_to_install {
 
     browser_packages=" chromium";
 
-    dev_packages=" code git";
+    dev_packages=" code git vi vim";
 
     apps_install="$hypland_packages";
     apps_install+="$rofi_packages";
