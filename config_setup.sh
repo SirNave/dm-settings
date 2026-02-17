@@ -332,7 +332,7 @@ function choose_tasks {
 }
 
 function setup_packages_to_install {
-    hypland_packages=" hyprland hypridle hyprlock hyprpicker xdg-desktop-portal-hyprland hyprpaper hyprsunset"
+    hypland_packages=" hyprland hypridle hyprlock hyprpicker xdg-desktop-portal-hyprland hyprpaper hyprsunset hyprshot"
     hypland_packages+=" hyprpolkitagent hyprlang hyprutils hyprland-qt-support aquamarine hyprgraphics hyprland-qtutils";
 
     rofi_packages=" rofi rofi-calc";
@@ -349,7 +349,7 @@ function setup_packages_to_install {
 
     wayland_utilities_packages=" wlsunset wlogout waybar qt5-wayland qt6-wayland xwaylandvideobridge cliphist ranger";
 
-    utilities_packages=" network-manager-applet grim flameshot slurp dunst bc brightnessctl python-requests python kitty qalculate-gtk viewnior";
+    utilities_packages=" network-manager-applet grim flameshot slurp satty dunst bc brightnessctl python-requests python kitty qalculate-gtk viewnior";
 
     game_utilities_packages=" steam protonup-qt-bin heroic-games-launcher-bin vkd3d lib32-vkd3d wine wine-mono winetricks";
 
