@@ -1,12 +1,23 @@
 #!/bin/bash
 
+set -euo pipefail
+
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+
+RED='\033[0;31m'
+RESET='\033[0m'
+
+INSTALLER_AUR_HELPER=""
+APP_TO_INSTALL=""
+install_rocm_group_membership=false
+
 echo "----- Start config script -----"
 
 function configure_hyprland_wm {
     echo "";
     echo "Starting Hyprland configs!";
 
-    backup_path="backup";
+    backup_path="${SCRIPT_DIR}/backup";
 
     echo "Creating Backup folder"
     if [[ -e $backup_path ]]
@@ -16,9 +27,9 @@ function configure_hyprland_wm {
     fi
 
     echo "-->Creating backup path - ${backup_path}<--"
-    mkdir "${backup_path}"
+    mkdir -p "${backup_path}"
 
-    for item_config in "dunst" "hypr" "kitty" "pipewire" "rofi" "waybar" "wlogout" "mimeapps.list"
+    for item_config in "dunst" "hypr" "kitty" "pipewire" "rofi" "waybar" "wlogout" "xdg-desktop-portal" "mimeapps.list"
     do
         moving_creating_configs "${item_config}" "${backup_path}"
     done
@@ -30,10 +41,9 @@ function configure_hyprland_wm {
 function moving_creating_configs  {
     user_home=~
     user_config_path="${user_home}/.config"
-    config_repo=${PWD}
-    config_backup="${config_repo}/$2"
-    config_repo_local=${config_repo}/$1
-    user_config_local=${user_config_path}/$1
+    config_backup="$2"
+    config_repo_local="${SCRIPT_DIR}/$1"
+    user_config_local="${user_config_path}/$1"
 
     if [[ $1 == "hypr" ]]
     then
@@ -77,22 +87,39 @@ function moving_creating_configs  {
     fi
 
     echo "--->Creating SisLink to ${repo_name} files of ${user_config_path}<---"
-    ln -sv "${config_repo_local}" "${user_config_path}"
+    ln -sfv "${config_repo_local}" "${user_config_path}"
 }
 
 function restore_configs_backup {
     echo "-------------------------------------------------"
     echo "-->Moving files to home folder<--"
 
-    list_backups="$(ls backup)";
+    backup_path="${SCRIPT_DIR}/backup"
 
-    for item_backup in $list_backups
+    if [[ ! -d "$backup_path" ]]
+    then
+        echo "-->No backup folder found at ${backup_path}, nothing to restore<--"
+        return
+    fi
+
+    shopt -s nullglob
+    backup_items=("${backup_path}"/*)
+    shopt -u nullglob
+
+    if [[ ${#backup_items[@]} -eq 0 ]]
+    then
+        echo "-->Backup folder is empty, nothing to restore<--"
+        return
+    fi
+
+    for item_backup_path in "${backup_items[@]}"
     do
+        item_backup="$(basename "${item_backup_path}")"
         rm -rfv ~/.config/"${item_backup}";
-        mv -v backup/"${item_backup}" ~/.config;
+        mv -v "${item_backup_path}" ~/.config;
     done
 
-    rm -r backup;
+    rm -rf "${backup_path}";
 }
 
 function choose_wm {
@@ -119,61 +146,68 @@ function choose_wm {
 
     # End of Greetings
     echo "";
-    echo "-------------------------"
-    echo "Choose wm to configure:";
-    echo " 1 - Hyprland WM";
-    echo " 2 - Exit";
 
-    read -r chosen_wm;
-    echo "-------------------------"
+    while true
+    do
+        echo "-------------------------"
+        echo "Choose wm to configure:";
+        echo " 1 - Hyprland WM";
+        echo " 2 - Exit";
 
-    case $chosen_wm in
-        1)
-            configure_hyprland_wm;
+        read -r chosen_wm;
+        echo "-------------------------"
+
+        case $chosen_wm in
+            1)
+                configure_hyprland_wm;
+                return
+                ;;
+            2)
+                exit_script;
+                ;;
+            *)
+                echo "";
+                echo "-------------------------";
+                echo "--                     --";
+                echo "--  Incorrect option!  --";
+                echo "--                     --";
+                echo "-------------------------";
+                echo "";
             ;;
-        2)
-            exit_script;
-            ;;
-        *)
-            echo "";
-            echo "-------------------------";
-            echo "--                     --";
-            echo "--  Incorrect option!  --";
-            echo "--                     --";
-            echo "-------------------------";
-            echo "";
-            choose_wm;
-        ;;
-    esac
+        esac
+    done
 }
 
 function choose_aur_helper {
-    echo "-------------------------"
-    echo "Choose AUR Helper:";
-    echo " 1 - trizen";
-    echo " 2 - Exit";
+    while true
+    do
+        echo "-------------------------"
+        echo "Choose AUR Helper:";
+        echo " 1 - trizen";
+        echo " 2 - Exit";
 
-    read -r aur_helper;
-    echo "-------------------------"
+        read -r aur_helper;
+        echo "-------------------------"
 
-    case $aur_helper in
-        1)
-            install_trizen;
+        case $aur_helper in
+            1)
+                install_trizen;
+                return
+                ;;
+            2)
+                exit_script;
+                ;;
+            *)
+                echo "";
+                echo "-------------------------";
+                echo "--                     --";
+                echo "--  Incorrect option!  --";
+                echo "--                     --";
+                echo "-------------------------";
+                echo "";
             ;;
-        2)
-            exit_script;
-            ;;
-        *)
-            echo "";
-            echo "-------------------------";
-            echo "--                     --";
-            echo "--  Incorrect option!  --";
-            echo "--                     --";
-            echo "-------------------------";
-            echo "";
-            choose_aur_helper;
-        ;;
-    esac
+        esac
+    done
 }
 
 function check_trizen_aur_helper {
@@ -185,7 +219,7 @@ function check_trizen_aur_helper {
 }
 
 function check_installed_package {
-    [[ -n $(pacman -Q "$1") ]];
+    pacman -Qq "$1" &>/dev/null;
 }
 
 function install_trizen {
@@ -193,11 +227,13 @@ function install_trizen {
     then
         if ! check_installed_package "git"
         then
-            install_dependencies "git";
+            echo "----- Installing prerequisite: git -----";
+            sudo pacman -Sq --noconfirm --needed git;
         fi
 
         echo "Installing trizen from 'https://aur.archlinux.org/trizen-git.git'";
-        
+
+        rm -rf trizen-git
         git clone "https://aur.archlinux.org/trizen-git.git"
 
         cd trizen-git || exit
@@ -256,9 +292,18 @@ function install_dependencies {
             $INSTALLER_AUR_HELPER -Sq --noconfirm $to_install;
         else
             echo "----- AUR Help not found, using regular pacman command!!!...";
-            sudo pacman -Sq "$to_install"
+            sudo pacman -Sq --noconfirm $to_install
         fi
     fi
+
+    if [[ "$install_rocm_group_membership" == "true" ]]
+    then
+        echo "";
+        echo "----- Adding $(whoami) to 'render' and 'video' groups for ROCm/HIP GPU access -----";
+        sudo usermod -aG render,video "$(whoami)";
+        echo "----- Log out and back in (or reboot) for the new group membership to take effect -----";
+    fi
+
     echo "";
     echo "-----< System Ready to Run >-----";
     echo "";
@@ -279,61 +324,61 @@ function exit_script {
 }
 
 function choose_tasks {
-    echo "-------------------------"
-    echo "Choose Task:";
-    echo " 1 - Install AUR Helper";
-    echo " 2 - Install dependencies";
-    echo " 3 - Config WM";
-    echo " 4 - Restore configs backup";
-    echo " 5 - All tasks";
-    echo " 6 - Exit";
+    while true
+    do
+        echo "-------------------------"
+        echo "Choose Task:";
+        echo " 1 - Install AUR Helper";
+        echo " 2 - Install dependencies";
+        echo " 3 - Config WM";
+        echo " 4 - Restore configs backup";
+        echo " 5 - All tasks";
+        echo " 6 - Exit";
 
-    read -r task;
-    echo "-------------------------"
+        read -r task;
+        echo "-------------------------"
 
-    case $task in
-        1)
-            choose_aur_helper;
-            choose_tasks;
+        case $task in
+            1)
+                choose_aur_helper;
+                ;;
+            2)
+                install_dependencies;
+                ;;
+            3)
+                choose_wm;
+                ;;
+            4)
+                restore_configs_backup
+                ;;
+            5)
+                choose_aur_helper;
+                install_dependencies;
+                choose_wm;
+                ;;
+            6)
+                ## Simple exit
+                return
+                ;;
+            *)
+                echo "";
+                echo "-------------------------";
+                echo "--                     --";
+                echo "--  Incorrect option!  --";
+                echo "--                     --";
+                echo "-------------------------";
+                echo "";
             ;;
-        2)
-            #TODO: Install all dependencies...
-            install_dependencies;
-            choose_tasks;
-            ;;
-        3)
-            #TODO: Remove comment
-            choose_wm;
-            choose_tasks;
-            ;;
-        4)
-            restore_configs_backup
-            ;;
-        5)
-            choose_aur_helper;
-            install_dependencies;
-            choose_wm;
-            choose_tasks;
-            ;;
-        6)
-            ## Simple exit
-            ;;
-        *)
-            echo "";
-            echo "-------------------------";
-            echo "--                     --";
-            echo "--  Incorrect option!  --";
-            echo "--                     --";
-            echo "-------------------------";
-            echo "";
-            choose_tasks;
-        ;;
-    esac
+        esac
+    done
 }
 
 function setup_packages_to_install {
+    install_rocm_group_membership=false;
+
     hypland_packages=" hyprland hypridle hyprlock hyprpicker xdg-desktop-portal-hyprland hyprpaper hyprsunset hyprshot"
-    hypland_packages+=" hyprpolkitagent hyprlang hyprutils hyprland-qt-support aquamarine hyprgraphics hyprland-qtutils";
+    hypland_packages+=" hyprlang hyprutils aquamarine hyprgraphics wlopm";
+    hypland_packages+=" papirus-icon-theme nordzy-icon-theme-git";
 
     rofi_packages=" rofi rofi-calc";
 
@@ -341,20 +386,19 @@ function setup_packages_to_install {
 
     players_packages=" spotify playerctl";
 
-    theme_packages=" kvantum kvantum-qt5 kvantum-theme-materia";
+    fonts_packages=" ttf-font-awesome ttf-nerd-fonts-symbols ttf-nerd-fonts-symbols-common ttf-nerd-fonts-symbols-mono ttf-dejavu noto-fonts noto-fonts-emoji ttf-liberation ttf-material-icons-git ttf-firacode-nerd"; # TODO - Verify fonts to install
 
-    fonts_packages=" ttf-font-awesome ttf-nerd-fonts-symbols ttf-nerd-fonts-symbols-common ttf-nerd-fonts-symbols-mono ttf-dejavu noto-fonts noto-fonts-emoji ttf-liberation ttf-material-icons-git"; # TODO - Verify fonts to install
-    
     bluetooth_packages=" blueberry blueman";
 
-    wayland_utilities_packages=" wlsunset wlogout waybar qt5-wayland qt6-wayland xwaylandvideobridge cliphist ranger";
+    wayland_utilities_packages=" wlogout waybar claudebar xwaylandvideobridge cliphist ranger wl-clipboard";
 
-    utilities_packages=" network-manager-applet grim flameshot slurp satty dunst bc brightnessctl python-requests python kitty qalculate-gtk viewnior";
+    utilities_packages=" network-manager-applet grim slurp satty dunst bc brightnessctl python-requests python kitty qalculate-gtk viewnior polkit-gnome libnotify psmisc";
 
     game_utilities_packages=" steam protonup-qt-bin heroic-games-launcher-bin vkd3d lib32-vkd3d wine wine-mono winetricks";
 
-    amd_game_utilities_packages=" amd-ucode amf-headers composable-kernel hip-runtime-amd amd-vulkan-prefixes";
-    amd_game_utilities_packages+=" vulkan-radeon lib32-vulkan-radeon ";
+    amd_game_utilities_packages=" amd-ucode amf-headers vulkan-radeon lib32-vulkan-radeon";
+
+    amd_rocm_packages=" hip-runtime-amd composable-kernel rocminfo rocm-smi-lib";
 
     browser_packages=" chromium";
 
@@ -364,7 +408,6 @@ function setup_packages_to_install {
     apps_install+="$rofi_packages";
     apps_install+="$pipewire_packages";
     apps_install+="$players_packages";
-    apps_install+="$theme_packages";
     apps_install+="$fonts_packages";
     apps_install+="$bluetooth_packages";
     apps_install+="$wayland_utilities_packages";
@@ -398,7 +441,22 @@ function setup_packages_to_install {
             ;;
     esac
     echo "-------------------------"
-    
+
+    echo "-------------------------"
+    echo "Install AMD ROCm/HIP compute utilities?";
+    echo " 1 - Yes";
+    echo " 0 - No";
+
+    read -r read_rocm;
+
+    case $read_rocm in
+        1)
+            apps_install+="$amd_rocm_packages";
+            install_rocm_group_membership=true;
+            ;;
+    esac
+    echo "-------------------------"
+
     echo "-------------------------"
     echo "Install development utilities?";
     echo " 1 - Yes";

@@ -1,0 +1,7 @@
+require("environment")
+require("monitors")
+require("exec")
+require("input")
+require("general")
+require("window-rule")
+require("bind")

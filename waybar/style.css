@@ -44,7 +44,8 @@ tooltip {
 #backlight,
 #custom-lock,
 #custom-power,
-#custom-reboot
+#custom-reboot,
+#custom-claudebar
 {
     background: #1e1e2e;
     padding: 0px 10px;
@@ -65,7 +66,6 @@ tooltip,
 #workspaces button.focused,
 #workspaces button.visible,
 #workspaces button.urgent,
-#workspaces button.visible,
 #workspaces button.hidden,
 #workspaces button:hover,
 #custom-lock,
@@ -89,7 +89,6 @@ tooltip,
 #workspaces button.focused,
 #workspaces button.visible,
 #workspaces button.urgent,
-#workspaces button.visible,
 #workspaces button.hidden,
 #workspaces button:hover,
 #custom-lock,
@@ -102,12 +101,15 @@ tooltip,
 }
 
 #mpris.colapsed,
-#mpris.expanded 
+#mpris.expanded,
+#custom-claudebar.colapsed,
+#custom-claudebar.expanded 
 {
     border: 0px;
 }
 
-#mpris.expanded {
+#mpris.expanded,
+#custom-claudebar.expanded  {
     padding-left: 0px;
 }
 
@@ -159,7 +161,7 @@ tooltip,
 }
 
 #workspaces button.active  {
-    color: #eeff00;
+    color: #f9e2af;
     background: #313244;
 }
 
@@ -169,29 +171,22 @@ tooltip,
 }
 
 #workspaces button.visible {
-    color: #a6adc8;
-    background: #00d9ff;
+    color: #89b4fa;
+    background: #313244;
 }
-
 
 #workspaces button.urgent {
-    color: #cdd6f4;
-    background: #ff002b;
-}
-
-#workspaces button.visible {
     color: #11111b;
-    background: #00ff55;
+    background: #f38ba8;
 }
 
 #workspaces button.hidden {
-    color: #11111b;
-    background: #ffd900;
+    color: #a6adc8;
 }
 
 #workspaces button:hover {
-    color: #eeff00;
-    background: #11111b;
+    color: #1e1e2e;
+    background: #cdd6f4;
 }
 
 #custom-caffeine {

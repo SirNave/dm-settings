@@ -1,6 +1,19 @@
 #!/bin/bash
 
-config_file=~/.config/hypr/bind.conf
-keybinds=$(grep -oP '(?<=bind = ).*' $config_file)
-keybinds=$(echo "$keybinds" | sed 's/,\([^,]*\)$/ = \1/' | sed 's/, exec//g' | sed 's/^,//g')
+config_file=~/.config/hypr/bind.lua
+
+keybinds=$(perl -ne '
+next if /^\s*--/;
+if (/hl\.bind\(\s*"([^"]+)"\s*,\s*(.*)\)\s*$/) {
+  my ($key, $rest) = ($1, $2);
+  $rest =~ s/,\s*\{[^{}]*\}\s*$//;
+  if ($rest =~ /^hl\.dsp\.exec_cmd\(\s*"(.*)"\s*\)$/) {
+    $rest = $1;
+  } else {
+    $rest =~ s/^hl\.dsp\.//;
+  }
+  print "$key  =  $rest\n";
+}
+' "$config_file")
+
 rofi -dmenu -p "Keybinds" <<< "$keybinds"
